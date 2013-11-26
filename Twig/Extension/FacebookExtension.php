@@ -27,7 +27,7 @@ class FacebookExtension extends \Twig_Extension
     }
     
     public function renderLoginFunction() {
-        $permissions = implode(',', $this->container->getParameter('fos_facebook.permissions')); 
+        $permissions = implode(',', $this->container->getParameter('eb_facebook.permissions')); 
                 
         return ("<script type=\"text/javascript\">function fbLogin() { FB.login(function(response) { }, {scope: '".$permissions."'}); } </script>");
     }
