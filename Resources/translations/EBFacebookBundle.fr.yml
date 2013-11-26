@@ -1,0 +1,25 @@
+layout:
+  invitation: Vous avez déjà invité tous les amis selectionnés
+
+form:
+    label:
+      firstname: Prénom
+      lastname: Nom
+      birthday: Date de naissance
+      email: Email
+      city: Ville
+      address: Adresse
+      zipcode: Code postal
+      phone: Téléphone
+      readConditions: J'ai lu et j'accepte le règlement du concours
+      offers:
+        email: Par email.
+        sms: Par SMS.
+    error:
+      required: Che champ est requis
+      pattern: Le format de ce champ est invalide
+      invalid: Ce champ est invalide
+      readConditions: Vous devez accepter le règlement pour pouvoir participer
+    format:
+      birthday: dd/MM/yyyy
+      

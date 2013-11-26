@@ -1,0 +1,17 @@
+{% extends base_template %}
+
+{% block body %}
+
+    {% block form_default_errors %}
+    <ul class="form-default-errors" style='display: none;'>
+        <li id="eb_facebook.required">{{ 'eb_facebook.required'|trans({}, "validators") }}</li>
+        <li id="eb_facebook.invalid">{{ 'eb_facebook.invalid'|trans({}, "validators") }}</li>
+        <li id="eb_facebook.check">{{ 'eb_facebook.check'|trans({}, "validators") }}</li>
+    </ul>
+    {% endblock %}
+
+    {% block form %}
+    {{ form(form) }}
+    {% endblock %}
+
+{% endblock %}

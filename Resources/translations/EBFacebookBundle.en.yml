@@ -1,0 +1,25 @@
+layout:
+  invitation: You have already invited all friends selected
+  
+form:
+    label:
+      firstname: Firstname
+      lastname: Lastname
+      birthday: Birthday
+      email: Email
+      city: City
+      address: Address
+      zipcode: Zipcode
+      phone: Phone
+      readConditions: I have read and agree to the contest rules
+      offers:
+        email: By email.
+        sms: By SMS.
+    error:
+      required: This field is required
+      pattern: The format of this field is invalid
+      invalid: This field is invalid
+      readConditions: You must accept the rules for participation
+    format:
+      birthday: yyyy/MM/dd
+      

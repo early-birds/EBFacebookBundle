@@ -1,0 +1,4 @@
+eb_facebook:
+  required: This field is required
+  invalid: This field is invalid
+  check: Please tick this box to continue

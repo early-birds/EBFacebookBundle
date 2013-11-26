@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="eb_facebook.provider.class">EB\FacebookBundle\Provider\FacebookProvider</parameter>
+        <parameter key="eb_facebook.listener.response.class">EB\FacebookBundle\Listener\ResponseListener</parameter>
+        <parameter key="eb_facebook.listener.precontroller.class">EB\FacebookBundle\Listener\PreControllerListener</parameter>
+        <parameter key="eb_facebook.twig.class">EB\FacebookBundle\Twig\Extension\FacebookExtension</parameter>
+    </parameters>
+    
+    <services>
+        
+        <service id="eb_facebook.provider" class="%eb_facebook.provider.class%">
+            <argument type="service" id="fos_facebook.api" />
+            <argument type="service" id="fos_user.user_manager" />
+            <argument type="service" id="validator" />
+        </service>
+        
+        <service id="eb_facebook.listener.response" class="%eb_facebook.listener.response.class%">
+            <argument type="service" id="service_container" />
+            <tag name="kernel.event_listener" event="kernel.response"  method="onKernelResponse" />
+        </service>
+        
+        <service id="eb_facebook.listener.precontroller" class="%eb_facebook.listener.precontroller.class%">
+            <argument type="service" id="session" />
+            <argument type="service" id="router" />
+            <argument type="service" id="fos_facebook.api" />
+            <tag name="kernel.event_listener" event="kernel.controller"  method="onKernelController" />
+        </service>
+                        
+        <service id="eb_facebook.twig" class="%eb_facebook.twig.class%">
+            <argument type="service" id="service_container" />
+            <tag name="twig.extension" />
+        </service>
+        
+        <service id="eb_facebook.form.type" class="EB\FacebookBundle\Form\UserType">
+            <tag name="form.type" alias="eb_facebook_form_type" />
+            <argument>%eb_facebook.user_class%</argument>
+            <argument>%eb_facebook.translation%</argument>
+            <argument type="service" id="translator" />
+        </service>
+        
+    </services>
+</container>

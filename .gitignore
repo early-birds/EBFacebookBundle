@@ -1,0 +1,10 @@
+# Symfony directories
+vendor/*
+*~
+
+.sass-cache
+.idea/*
+/nbproject
+
+composer.lock
+composer.phar

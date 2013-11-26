@@ -1,0 +1,4 @@
+eb_facebook:
+  required: Ce champ est obligatoire
+  invalid: Le format de ce champ est invalide
+  check: Veuillez cocher cette case pour continuer

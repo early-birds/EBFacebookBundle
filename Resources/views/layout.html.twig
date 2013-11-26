@@ -1,0 +1,85 @@
+{% set route = app.request.attributes.get('_route') %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>{% block title %}{% endblock %}</title>
+        {% block stylesheets %}
+            {% stylesheets 'bundles/ebfacebook/css/jquery.qtip.min.css'
+            filter='cssrewrite'
+            %}
+            <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
+            {% endstylesheets %}
+        {% endblock %}
+        {% block javascripts %}
+            <script src="//code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+            {% javascripts  'bundles/ebfacebook/js/jquery.qtip.min.js'
+                            'bundles/ebfacebook/js/main.js'
+            %}
+            <script src="{{ asset_url }}" type="text/javascript"></script>
+            {% endjavascripts %}
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        
+        {% block layout_msg %}
+        <ul style='display:none'>
+            <li id='layout.invitation'>{{ 'layout.invitation'|trans({}, "EBFacebookBundle") }}</li>
+        </ul>
+        {% endblock %}
+        
+        <div class="wrap page-{{ route }}">
+            {% block header %}
+            {% endblock header %}
+            {% block content %}
+            <div class="content">
+                {% block body %}
+                {% endblock body %}
+                {% block overlay %}
+                    {% if app.session.get('liked') == false %}
+                    <div class="overlay overlay-wrap">
+                        <div class="overlay-like"></div>
+                    </div>
+                    {% endif %}
+                {% endblock overlay %}   
+            </div>
+            {% endblock content %}
+            {% block footer %}
+            <div class="footer">
+                <div class="footer-inner">
+                    {% block footer_inner %}
+                        <div class="footer-title">{% block footer_title %}Règlement{% endblock footer_title %}</div>
+                        {% block footer_content %}
+                        {% endblock footer_content %}
+                    {% endblock footer_inner %}
+                </div>
+            </div>
+            {% endblock footer %}
+        </div>
+                    
+        {{ facebook_initialize({'xfbml': true, 'fbAsyncInit': 'onFbInit();'}) }}
+        {{ facebook_login_function() }}
+        
+        <script type="text/javascript" >
+            function goLogIn(){
+                window.location = "{{ path('_security_check') }}";
+            }
+            function onFbInit() {
+                if (typeof(FB) !== 'undefined' && FB !== null ) {
+                    FB.Canvas.setAutoGrow();
+                    FB.Event.subscribe('auth.statusChange', function(response) {
+                        if (response.session || response.authResponse) {
+                            setTimeout(goLogIn, 50);
+                        } else {
+                            window.location = "{{ path('_security_logout') }}";
+                        }
+                    });
+                }
+            }
+        </script>
+        
+        {% block more %}
+        {% endblock more %}
+    </body>
+</html>
