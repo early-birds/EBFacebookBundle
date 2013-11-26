@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 class EBFacebookExtension extends Extension implements PrependExtensionInterface
 {
     public function getDefaultPermissions() {
-        $mandatoryPermissions = array('user_birthday', 'user_likes', 'user_friends', 'user_interests', 'friends_birthday', 'friends_likes');
+        $mandatoryPermissions = array('email', 'user_birthday', 'user_likes', 'user_friends', 'user_interests', 'friends_birthday', 'friends_likes');
         $recommendedPermissions = array('user_about_me', 'user_activities', 'user_relationships', 'friends_hometown', 'friends_location', 'friends_interests', 'friends_relationships');
         $allPermissions = array_merge($mandatoryPermissions, $recommendedPermissions);
         return $allPermissions;
