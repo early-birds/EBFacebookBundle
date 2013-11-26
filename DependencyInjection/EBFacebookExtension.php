@@ -15,6 +15,13 @@ use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
  */
 class EBFacebookExtension extends Extension implements PrependExtensionInterface
 {
+    public function getDefaultPermissions() {
+        $mandatoryPermissions = array('user_birthday', 'user_likes', 'user_friends', 'user_interests', 'friends_birthday', 'friends_likes');
+        $recommendedPermissions = array('user_about_me', 'user_activities', 'user_relationships', 'friends_hometown', 'friends_location', 'friends_interests', 'friends_relationships');
+        $allPermissions = array_merge($mandatoryPermissions, $recommendedPermissions);
+        return $allPermissions;
+    }
+    
     /**
      * {@inheritDoc}
      */
@@ -26,11 +33,8 @@ class EBFacebookExtension extends Extension implements PrependExtensionInterface
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
         
-        $mandatoryPermissions = array('user_birthday', 'user_likes', 'user_friends', 'user_interests', 'friends_birthday', 'friends_likes');
-        $recommendedPermissions = array('user_about_me', 'user_activities', 'user_relationships', 'friends_hometown', 'friends_location', 'friends_interests', 'friends_relationships');
-        $allPermissions = array_merge($mandatoryPermissions, $recommendedPermissions);
-        if (!$config['permissions']) $config['permissions'] = $allPermissions;
-
+        if (!$config['permissions']) $config['permissions'] = $this->getDefaultPermissions();
+                
         foreach (array('app_id', 'secret', 'tab_url', 'culture', 'translation', 'permissions', 'templates', 'fixcookie', 'user_class', 'form_class') as $attribute) {
             $container->setParameter('eb_facebook.'.$attribute, $config[$attribute]);
         }
@@ -40,6 +44,7 @@ class EBFacebookExtension extends Extension implements PrependExtensionInterface
     {
         $configs = $container->getExtensionConfig($this->getAlias());
         $config_eb_facebook = $this->processConfiguration(new Configuration(), $configs);
+        if (!$config_eb_facebook['permissions']) $config_eb_facebook['permissions'] = $this->getDefaultPermissions();
         
         $container->prependExtensionConfig('fos_facebook', array(
             'alias' => 'facebook',
