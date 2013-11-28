@@ -41,11 +41,14 @@ class FacebookController extends Controller
     
     public function homeAction()
     {
+        $GET = $this->getRequest()->query;
         $fixcookieUrl = $this->getParam('fixcookie');
         if ($fixcookieUrl && preg_match('/Safari/i',$_SERVER['HTTP_USER_AGENT']) && count($_COOKIE) === 0) {
             die('<script>top.location = "'.$fixcookieUrl.'"</script>');
         }
-        if(!is_null($this->getRequest()->query->get('request_ids'))) die('<script>top.location = "'.$this->getParam('tab_url').'"</script>');
+        if ($this->getParam('skip_add')) {
+            if(!is_null($GET->get('request_ids')) || !is_null($GET->get('fb_source'))) die('<script>top.location = "'.$this->getParam('tab_url').'"</script>');
+        }
 
         if ($this->isDev()) $this->getRequest()->getSession()->set('liked', true);
         

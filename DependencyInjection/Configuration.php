@@ -23,6 +23,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('app_id')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('secret')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('tab_url')->isRequired()->cannotBeEmpty()->end()
+                ->scalarNode('skip_app')->defaultValue(false)->end()
                 ->scalarNode('culture')->defaultValue('fr_FR')->end()
                 ->scalarNode('fixcookie')->defaultValue(false)->end()
                 ->scalarNode('user_class')->defaultValue('EB\FacebookBundle\Entity\User')->end()
