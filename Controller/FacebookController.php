@@ -46,7 +46,7 @@ class FacebookController extends Controller
         if ($fixcookieUrl && preg_match('/Safari/i',$_SERVER['HTTP_USER_AGENT']) && count($_COOKIE) === 0) {
             die('<script>top.location = "'.$fixcookieUrl.'"</script>');
         }
-        if ($this->getParam('skip_add')) {
+        if ($this->getParam('skip_app')) {
             if(!is_null($GET->get('request_ids')) || !is_null($GET->get('fb_source'))) die('<script>top.location = "'.$this->getParam('tab_url').'"</script>');
         }
 
