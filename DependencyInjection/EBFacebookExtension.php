@@ -32,10 +32,12 @@ class EBFacebookExtension extends Extension implements PrependExtensionInterface
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
-        
+
         if (!$config['permissions']) $config['permissions'] = $this->getDefaultPermissions();
-                
-        foreach (array('app_id', 'secret', 'tab_url', 'skip_app', 'culture', 'translation', 'permissions', 'templates', 'fixcookie', 'user_class', 'form_class') as $attribute) {
+        if ($config['add_permissions']) $config['permissions'] = array_merge($config['permissions'], $config['add_permissions']);
+        if ($config['less_permissions']) $config['permissions'] = array_diff($config['permissions'], $config['less_permissions']);
+
+        foreach (array('app_id', 'secret', 'tab_url', 'skip_app', 'culture', 'translation', 'permissions', 'add_permissions', 'less_permissions', 'templates', 'fixcookie', 'user_class', 'form_class') as $attribute) {
             $container->setParameter('eb_facebook.'.$attribute, $config[$attribute]);
         }
     }

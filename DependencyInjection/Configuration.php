@@ -22,7 +22,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('app_id')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('secret')->isRequired()->cannotBeEmpty()->end()
-                ->scalarNode('tab_url')->isRequired()->cannotBeEmpty()->end()
+                ->scalarNode('tab_url')->defaultValue(false)->end()
                 ->scalarNode('skip_app')->defaultValue(false)->end()
                 ->scalarNode('culture')->defaultValue('fr_FR')->end()
                 ->scalarNode('fixcookie')->defaultValue(false)->end()
@@ -37,7 +37,9 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('register')->defaultValue('EBFacebookBundle::register.html.twig')->cannotBeEmpty()->end()
                     ->end()
                 ->end()
-                ->arrayNode('permissions')->prototype('scalar')->end()
+                ->arrayNode('permissions')->prototype('scalar')->end()->end()
+                ->arrayNode('add_permissions')->prototype('scalar')->end()->end()
+                ->arrayNode('less_permissions')->prototype('scalar')->end()->end()
             ->end()
         ;
 
