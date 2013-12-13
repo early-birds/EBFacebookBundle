@@ -28,7 +28,7 @@ class User extends BaseUser
         $this->offersEmail = 0;
         $this->offersSms = 0;
         $this->validated = false;
-        $this->ip = $_SERVER["REMOTE_ADDR"];
+        $this->ip = isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : NULL;
     }
     
     /**
