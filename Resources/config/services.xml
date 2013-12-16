@@ -28,6 +28,9 @@
             <argument type="service" id="session" />
             <argument type="service" id="router" />
             <argument type="service" id="fos_facebook.api" />
+            <argument>%eb_facebook.tab_like%</argument>
+            <argument>%eb_facebook.tab_like_exclude_route%</argument>
+            <argument>%eb_facebook.tab_like_exclude_pattern%</argument>
             <tag name="kernel.event_listener" event="kernel.controller"  method="onKernelController" />
         </service>
                         

@@ -14,19 +14,30 @@ class PreControllerListener
     protected $session;
     protected $router;
     protected $facebookApi;
+    protected $tabLike;
+    protected $tabLikeExcludeRoute;
+    protected $tabLikeExcludePattern;
    
-    public function __construct(Session $session, RouterInterface $router, BaseFacebook $facebookApi)
+    public function __construct(Session $session, RouterInterface $router, BaseFacebook $facebookApi, $tabLike, $tabLikeExcludeRoute, $tabLikeExcludePattern)
     {
         $this->session = $session;
         $this->router = $router;
         $this->facebookApi = $facebookApi;
+        $this->tabLike = $tabLike;    
+        $this->tabLikeExcludeRoute = $tabLikeExcludeRoute;    
+        $this->tabLikeExcludePattern = $tabLikeExcludePattern;    
     }
  
     public function onKernelController(FilterControllerEvent $event)
     {
-        if (HttpKernel::MASTER_REQUEST == $event->getRequestType()) {
+        if ($this->tabLike && HttpKernel::MASTER_REQUEST == $event->getRequestType()) {
             $request = $event->getRequest();
             $route   = $request->attributes->get('_route');
+            $url     = $this->router->generate($route, $request->attributes->get('_route_params'));
+            
+            if (in_array($route, $this->tabLikeExcludeRoute)) return;
+            if (preg_match('#'.implode('|', $this->tabLikeExcludePattern).'#', $url)) return;
+
             $fbToken = $request->get('signed_request', false);
             $liked   = $this->session->get('liked', false);
 
@@ -41,13 +52,12 @@ class PreControllerListener
             if (!$liked) {
                 $this->session->set('liked', false);
                 if ($route === 'eb_facebook_home') return;
-                
+
                 $redirectUrl = $this->router->generate('eb_facebook_home');
                 $event->setController(function() use ($redirectUrl) {
                     return new RedirectResponse($redirectUrl);
                 });
             } 
         }
-               
     }
 }
