@@ -25,17 +25,17 @@ class EBFacebookExtension extends Extension implements PrependExtensionInterface
     }
     
     public function getDefaultPatterns() {
-        $tabLikeExcludePattern = array();
-        foreach ($this->patterns as $pattern) $tabLikeExcludePattern[] = "\/".$pattern."((\/\w+)+|\/?)$";
+        $excludePatterns = array();
+        foreach ($this->patterns as $pattern) $excludePatterns[] = "\/".$pattern."((\/\w+)+|\/?)$";
         
-        return $tabLikeExcludePattern;
+        return $excludePatterns;
     }
     
     public function getDefaultRoutesStart() {
-        $tabLikeExcludeRoutesStart = array();
-        foreach ($this->routesStart as $route) $tabLikeExcludeRoutesStart[] = "^".$route;
+        $excludeRoutesStart = array();
+        foreach ($this->routesStart as $route) $excludeRoutesStart[] = "^".$route;
         
-        return $tabLikeExcludeRoutesStart;
+        return $excludeRoutesStart;
     }
     
     /**
@@ -50,13 +50,14 @@ class EBFacebookExtension extends Extension implements PrependExtensionInterface
         $loader->load('services.xml');
 
         if (!$config['permissions']) $config['permissions'] = $this->getDefaultPermissions();
-        if (!$config['tab_like_exclude_route_start']) $config['tab_like_exclude_route_start'] = $this->getDefaultRoutesStart();
-        if (!$config['tab_like_exclude_pattern']) $config['tab_like_exclude_pattern'] = $this->getDefaultPatterns();
+        if (!$config['precontroller_exclude_route_start']) $config['precontroller_exclude_route_start'] = $this->getDefaultRoutesStart();
+        if (!$config['precontroller_exclude_pattern']) $config['precontroller_exclude_pattern'] = $this->getDefaultPatterns();
         
         if ($config['add_permissions']) $config['permissions'] = array_merge($config['permissions'], $config['add_permissions']);
         if ($config['less_permissions']) $config['permissions'] = array_diff($config['permissions'], $config['less_permissions']);
-
-        foreach (array('app_id', 'secret', 'tab_url', 'tab_like', 'tab_like_exclude_route', 'tab_like_exclude_route_start', 'tab_like_exclude_pattern', 'skip_app', 'culture', 'translation', 'permissions', 'add_permissions', 'less_permissions', 'templates', 'fixcookie', 'user_class', 'form_class') as $attribute) {
+        
+        $container->setParameter('eb_facebook.config', $config);
+        foreach (array('app_id', 'secret', 'homepage', 'tab_url', 'app_params', 'tab_like', 'precontroller_exclude_route', 'precontroller_exclude_route_start', 'precontroller_exclude_pattern', 'skip_app', 'culture', 'translation', 'permissions', 'add_permissions', 'less_permissions', 'templates', 'fixcookie', 'user_class', 'form_class') as $attribute) {
             $container->setParameter('eb_facebook.'.$attribute, $config[$attribute]);
         }
     }

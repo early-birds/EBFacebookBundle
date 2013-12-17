@@ -25,13 +25,9 @@
         </service>
         
         <service id="eb_facebook.listener.precontroller" class="%eb_facebook.listener.precontroller.class%">
-            <argument type="service" id="session" />
             <argument type="service" id="router" />
             <argument type="service" id="fos_facebook.api" />
-            <argument>%eb_facebook.tab_like%</argument>
-            <argument>%eb_facebook.tab_like_exclude_route%</argument>
-            <argument>%eb_facebook.tab_like_exclude_route_start%</argument>
-            <argument>%eb_facebook.tab_like_exclude_pattern%</argument>
+            <argument>%eb_facebook.config%</argument>
             <tag name="kernel.event_listener" event="kernel.controller"  method="onKernelController" />
         </service>
                         

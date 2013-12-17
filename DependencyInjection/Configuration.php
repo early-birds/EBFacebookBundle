@@ -22,6 +22,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('app_id')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('secret')->isRequired()->cannotBeEmpty()->end()
+                ->scalarNode('homepage')->defaultValue('eb_facebook_home')->end()
                 ->scalarNode('tab_url')->defaultValue(false)->end()
                 ->scalarNode('tab_like')->defaultValue(true)->end()
                 ->scalarNode('skip_app')->defaultValue(false)->end()
@@ -41,9 +42,10 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('permissions')->prototype('scalar')->end()->end()
                 ->arrayNode('add_permissions')->prototype('scalar')->end()->end()
                 ->arrayNode('less_permissions')->prototype('scalar')->end()->end()
-                ->arrayNode('tab_like_exclude_route')->prototype('scalar')->end()->end()
-                ->arrayNode('tab_like_exclude_route_start')->prototype('scalar')->end()->end()
-                ->arrayNode('tab_like_exclude_pattern')->prototype('scalar')->end()->end()
+                ->arrayNode('app_params')->prototype('scalar')->end()->end()
+                ->arrayNode('precontroller_exclude_route')->prototype('scalar')->end()->end()
+                ->arrayNode('precontroller_exclude_route_start')->prototype('scalar')->end()->end()
+                ->arrayNode('precontroller_exclude_pattern')->prototype('scalar')->end()->end()
             ->end()
         ;
 

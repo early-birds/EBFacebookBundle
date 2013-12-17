@@ -11,56 +11,75 @@ use \BaseFacebook;
 
 class PreControllerListener
 {
-    protected $session;
     protected $router;
     protected $facebookApi;
-    protected $tabLike;
-    protected $tabLikeExcludeRoute;
-    protected $tabLikeExcludeRouteStart;
-    protected $tabLikeExcludePattern;
+    protected $config;
    
-    public function __construct(Session $session, RouterInterface $router, BaseFacebook $facebookApi, $tabLike, $tabLikeExcludeRoute, $tabLikeExcludeRouteStart, $tabLikeExcludePattern)
+    public function __construct(RouterInterface $router, BaseFacebook $facebookApi, $config)
     {
-        $this->session = $session;
         $this->router = $router;
         $this->facebookApi = $facebookApi;
-        $this->tabLike = $tabLike;    
-        $this->tabLikeExcludeRoute = $tabLikeExcludeRoute;    
-        $this->tabLikeExcludeRouteStart = $tabLikeExcludeRouteStart;    
-        $this->tabLikeExcludePattern = $tabLikeExcludePattern;    
+        $this->config = $config;    
     }
  
     public function onKernelController(FilterControllerEvent $event)
-    {
-        if ($this->tabLike && HttpKernel::MASTER_REQUEST == $event->getRequestType()) {
+    {           
+        if (HttpKernel::MASTER_REQUEST == $event->getRequestType()) {
             $request = $event->getRequest();
+            $session = $request->getSession();
             $route   = $request->attributes->get('_route');
-                        
-            if (in_array($route, $this->tabLikeExcludeRoute)) return;
-            if (preg_match('#'.implode('|', $this->tabLikeExcludeRouteStart).'#', $route)) return;
-            $url = $this->router->generate($route, $request->attributes->get('_route_params'));
-            if (preg_match('#'.implode('|', $this->tabLikeExcludePattern).'#', $url)) return;
-
-            $fbToken = $request->get('signed_request', false);
-            $liked   = $this->session->get('liked', false);
-
-            if($fbToken){
-                $signedRequest = $this->facebookApi->getSignedRequest();
-                if(!is_null($signedRequest['page']['liked'])){
-                    $liked = $signedRequest['page']['liked'];
-                    $this->session->set('liked', $liked);
+            $GET     = $request->query;
+            $url     = $this->router->generate($route, $request->attributes->get('_route_params'));
+        
+            //Dont use pre controller for some links
+            if (in_array($route, $this->config['precontroller_exclude_route'])) return;
+            if (preg_match('#'.implode('|', $this->config['precontroller_exclude_route_start']).'#', $route)) return;
+            if (preg_match('#'.implode('|', $this->config['precontroller_exclude_pattern']).'#', $url)) return;
+            
+            /* Facebook debug iframe */
+            if ($this->config['skip_app'] && $this->config['tab_url'] && (!is_null($GET->get('request_ids')) || !is_null($GET->get('fb_source')))) {
+                if ($this->config['app_params']) {
+                    foreach ($this->config['app_params'] as $appParam) {
+                        if (!is_null($GET->get($appParam))) $session->set('app_params.'.$appParam, $GET->get($appParam));
+                    }
                 }
+                die('<script>top.location = "'.$this->config['tab_url'].'"</script>');
+            }
+            if ($this->config['fixcookie'] && preg_match('/Safari/i',$_SERVER['HTTP_USER_AGENT']) && count($_COOKIE) === 0) {
+                die('<script>top.location = "'.$this->config['fixcookie'].'"</script>');
             }
 
-            if (!$liked) {
-                $this->session->set('liked', false);
-                if ($route === 'eb_facebook_home') return;
+            /* Like security */
+            if ($this->config['tab_like']) {
+                $fbToken = $request->get('signed_request', false);
+                $liked   = $session->get('liked', false);
 
-                $redirectUrl = $this->router->generate('eb_facebook_home');
-                $event->setController(function() use ($redirectUrl) {
-                    return new RedirectResponse($redirectUrl);
-                });
-            } 
+                if($fbToken){
+                    $signedRequest = $this->facebookApi->getSignedRequest();
+                    if(!is_null($signedRequest['page']['liked'])){
+                        $liked = $signedRequest['page']['liked'];
+                        $session->set('liked', $liked);
+                    }
+                }
+
+                if (!$liked) {
+                    $session->set('referer_url', $url);
+                    $session->set('liked', false);
+                    if ($route === $this->config['homepage']) return;
+
+                    $redirectUrl = $this->router->generate($this->config['homepage']);
+                    $event->setController(function() use ($redirectUrl) {
+                        return new RedirectResponse($redirectUrl);
+                    });
+                } else {
+                    $refererUrl = $session->get('referer_url', false);
+                    if ($refererUrl) {
+                        $event->setController(function() use ($refererUrl) {
+                            return new RedirectResponse($refererUrl);
+                        });
+                    }
+                }
+            } else $session->set('liked', true);
         }
     }
 }

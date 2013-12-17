@@ -41,17 +41,6 @@ class FacebookController extends Controller
     
     public function homeAction()
     {
-        $GET = $this->getRequest()->query;
-        $fixcookieUrl = $this->getParam('fixcookie');
-        $tab_url = $this->getParam('tab_url');
-        
-        if ($fixcookieUrl && preg_match('/Safari/i',$_SERVER['HTTP_USER_AGENT']) && count($_COOKIE) === 0) {
-            die('<script>top.location = "'.$fixcookieUrl.'"</script>');
-        }
-        if ($this->getParam('skip_app') && $tab_url) {
-            if(!is_null($GET->get('request_ids')) || !is_null($GET->get('fb_source'))) die('<script>top.location = "'.$tab_url.'"</script>');
-        }
-
         if ($this->isDev()) $this->getRequest()->getSession()->set('liked', true);
         
         return $this->facebookReturn('home');
