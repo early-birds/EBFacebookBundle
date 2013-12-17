@@ -42,6 +42,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('add_permissions')->prototype('scalar')->end()->end()
                 ->arrayNode('less_permissions')->prototype('scalar')->end()->end()
                 ->arrayNode('tab_like_exclude_route')->prototype('scalar')->end()->end()
+                ->arrayNode('tab_like_exclude_route_start')->prototype('scalar')->end()->end()
                 ->arrayNode('tab_like_exclude_pattern')->prototype('scalar')->end()->end()
             ->end()
         ;

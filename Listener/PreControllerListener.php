@@ -16,15 +16,17 @@ class PreControllerListener
     protected $facebookApi;
     protected $tabLike;
     protected $tabLikeExcludeRoute;
+    protected $tabLikeExcludeRouteStart;
     protected $tabLikeExcludePattern;
    
-    public function __construct(Session $session, RouterInterface $router, BaseFacebook $facebookApi, $tabLike, $tabLikeExcludeRoute, $tabLikeExcludePattern)
+    public function __construct(Session $session, RouterInterface $router, BaseFacebook $facebookApi, $tabLike, $tabLikeExcludeRoute, $tabLikeExcludeRouteStart, $tabLikeExcludePattern)
     {
         $this->session = $session;
         $this->router = $router;
         $this->facebookApi = $facebookApi;
         $this->tabLike = $tabLike;    
         $this->tabLikeExcludeRoute = $tabLikeExcludeRoute;    
+        $this->tabLikeExcludeRouteStart = $tabLikeExcludeRouteStart;    
         $this->tabLikeExcludePattern = $tabLikeExcludePattern;    
     }
  
@@ -33,9 +35,10 @@ class PreControllerListener
         if ($this->tabLike && HttpKernel::MASTER_REQUEST == $event->getRequestType()) {
             $request = $event->getRequest();
             $route   = $request->attributes->get('_route');
-            $url     = $this->router->generate($route, $request->attributes->get('_route_params'));
-            
+                        
             if (in_array($route, $this->tabLikeExcludeRoute)) return;
+            if (preg_match('#'.implode('|', $this->tabLikeExcludeRouteStart).'#', $route)) return;
+            $url = $this->router->generate($route, $request->attributes->get('_route_params'));
             if (preg_match('#'.implode('|', $this->tabLikeExcludePattern).'#', $url)) return;
 
             $fbToken = $request->get('signed_request', false);

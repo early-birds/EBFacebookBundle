@@ -17,6 +17,8 @@ class EBFacebookExtension extends Extension implements PrependExtensionInterface
 {
     private $mandatoryPermissions = array('email', 'user_birthday', 'user_likes', 'user_friends', 'user_interests', 'friends_birthday', 'friends_likes');
     private $recommendedPermissions = array('user_about_me', 'user_activities', 'user_relationships', 'friends_hometown', 'friends_location', 'friends_interests', 'friends_relationships');
+    private $patterns = array('admin', 'login', 'logout', 'login_facebook_check');
+    private $routesStart = array('_imagine', '_sonata', '_security', '_profiler', '_assetic', '_configurator');
             
     public function getDefaultPermissions() {
         return array_merge($this->mandatoryPermissions, $this->recommendedPermissions);
@@ -24,10 +26,16 @@ class EBFacebookExtension extends Extension implements PrependExtensionInterface
     
     public function getDefaultPatterns() {
         $tabLikeExcludePattern = array();
-        $patterns = array('admin', 'login', 'logout', 'login_facebook_check');
-        foreach ($patterns as $pattern) $tabLikeExcludePattern[] = "\/".$pattern."((\/\w+)+|\/?)$";
+        foreach ($this->patterns as $pattern) $tabLikeExcludePattern[] = "\/".$pattern."((\/\w+)+|\/?)$";
         
         return $tabLikeExcludePattern;
+    }
+    
+    public function getDefaultRoutesStart() {
+        $tabLikeExcludeRoutesStart = array();
+        foreach ($this->routesStart as $route) $tabLikeExcludeRoutesStart[] = "^".$route;
+        
+        return $tabLikeExcludeRoutesStart;
     }
     
     /**
@@ -42,12 +50,13 @@ class EBFacebookExtension extends Extension implements PrependExtensionInterface
         $loader->load('services.xml');
 
         if (!$config['permissions']) $config['permissions'] = $this->getDefaultPermissions();
+        if (!$config['tab_like_exclude_route_start']) $config['tab_like_exclude_route_start'] = $this->getDefaultRoutesStart();
         if (!$config['tab_like_exclude_pattern']) $config['tab_like_exclude_pattern'] = $this->getDefaultPatterns();
         
         if ($config['add_permissions']) $config['permissions'] = array_merge($config['permissions'], $config['add_permissions']);
         if ($config['less_permissions']) $config['permissions'] = array_diff($config['permissions'], $config['less_permissions']);
 
-        foreach (array('app_id', 'secret', 'tab_url', 'tab_like', 'tab_like_exclude_route', 'tab_like_exclude_pattern', 'skip_app', 'culture', 'translation', 'permissions', 'add_permissions', 'less_permissions', 'templates', 'fixcookie', 'user_class', 'form_class') as $attribute) {
+        foreach (array('app_id', 'secret', 'tab_url', 'tab_like', 'tab_like_exclude_route', 'tab_like_exclude_route_start', 'tab_like_exclude_pattern', 'skip_app', 'culture', 'translation', 'permissions', 'add_permissions', 'less_permissions', 'templates', 'fixcookie', 'user_class', 'form_class') as $attribute) {
             $container->setParameter('eb_facebook.'.$attribute, $config[$attribute]);
         }
     }
