@@ -25,7 +25,7 @@ class EBFacebookExtension extends Extension implements PrependExtensionInterface
     public function getDefaultPatterns() {
         $tabLikeExcludePattern = array();
         $patterns = array('admin', 'login', 'logout', 'login_facebook_check');
-        foreach ($patterns as $pattern) $tabLikeExcludePattern[] = "^\/".$pattern."((\/\w+)+|\/?)$";
+        foreach ($patterns as $pattern) $tabLikeExcludePattern[] = "\/".$pattern."((\/\w+)+|\/?)$";
         
         return $tabLikeExcludePattern;
     }
