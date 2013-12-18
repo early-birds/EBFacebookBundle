@@ -25,19 +25,25 @@ class PreControllerListener
     public function onKernelController(FilterControllerEvent $event)
     {           
         if (HttpKernel::MASTER_REQUEST == $event->getRequestType()) {
-            $request = $event->getRequest();
-            $session = $request->getSession();
-            $route   = $request->attributes->get('_route');
-            $GET     = $request->query;
-            $url     = $this->router->generate($route, $request->attributes->get('_route_params'));
+            $request  = $event->getRequest();
+            $session  = $request->getSession();
+            $route    =  $request->attributes->get('_route');
+            $GET      = $request->query;
+            $url      = $this->router->generate($route, $request->attributes->get('_route_params'));
+            $appParam = false;
         
             //Dont use pre controller for some links
             if (in_array($route, $this->config['precontroller_exclude_route'])) return;
             if (preg_match('#'.implode('|', $this->config['precontroller_exclude_route_start']).'#', $route)) return;
             if (preg_match('#'.implode('|', $this->config['precontroller_exclude_pattern']).'#', $url)) return;
             
+            foreach ($this->config['app_params'] as $p) {
+                if (!is_null($GET->get($p))) $appParam = true;
+                break;
+            }
+            
             /* Facebook debug iframe */
-            if ($this->config['skip_app'] && $this->config['tab_url'] && (!is_null($GET->get('request_ids')) || !is_null($GET->get('fb_source')))) {
+            if ($this->config['skip_app'] && $this->config['tab_url'] && (!is_null($GET->get('request_ids')) || !is_null($GET->get('fb_source')) || $appParam)) {
                 if ($this->config['app_params']) {
                     foreach ($this->config['app_params'] as $appParam) {
                         if (!is_null($GET->get($appParam))) $session->set('app_params.'.$appParam, $GET->get($appParam));
@@ -50,7 +56,7 @@ class PreControllerListener
             }
 
             /* Like security */
-            if ($this->config['tab_like']) {
+            if ($this->config['tab_like'] && $this->config['tab_url']) {
                 $fbToken = $request->get('signed_request', false);
                 $liked   = $session->get('liked', false);
 
