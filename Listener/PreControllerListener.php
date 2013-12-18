@@ -38,20 +38,23 @@ class PreControllerListener
             if (preg_match('#'.implode('|', $this->config['precontroller_exclude_pattern']).'#', $url)) return;
             
             foreach ($this->config['app_params'] as $p) {
-                if (!is_null($GET->get($p))) $appParam = true;
-                break;
+                if (!is_null($GET->get($p))) {
+                    $appParam = true;
+                    break;
+                }
             }
             
             /* Facebook debug iframe */
-            if ($this->config['skip_app'] && $this->config['tab_url'] && (!is_null($GET->get('request_ids')) || !is_null($GET->get('fb_source')) || $appParam)) {
-                if ($this->config['app_params']) {
+            if (!is_null($GET->get('request_ids')) || !is_null($GET->get('fb_source')) || $appParam) {
+                if ($appParam) {
                     foreach ($this->config['app_params'] as $appParam) {
                         if (!is_null($GET->get($appParam))) $session->set('app_params.'.$appParam, $GET->get($appParam));
                     }
                 }
-                die('<script>top.location = "'.$this->config['tab_url'].'"</script>');
-            }
-            if ($this->config['fixcookie'] && preg_match('/Safari/i',$_SERVER['HTTP_USER_AGENT']) && count($_COOKIE) === 0) {
+                if ($this->config['skip_app'] && $this->config['tab_url']) {
+                    die('<script>top.location = "'.$this->config['tab_url'].'"</script>');
+                }
+            } else if ($this->config['fixcookie'] && preg_match('/Safari/i',$_SERVER['HTTP_USER_AGENT']) && count($_COOKIE) === 0) {
                 die('<script>top.location = "'.$this->config['fixcookie'].'"</script>');
             }
 
