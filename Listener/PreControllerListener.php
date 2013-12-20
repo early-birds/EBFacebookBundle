@@ -72,9 +72,9 @@ class PreControllerListener
                 }
 
                 if (!$liked) {
-                    $session->set('referer_url', $url);
                     $session->set('liked', false);
                     if ($route === $this->config['homepage']) return;
+                    $session->set('referer_url', $url);
 
                     $redirectUrl = $this->router->generate($this->config['homepage']);
                     $event->setController(function() use ($redirectUrl) {
@@ -83,6 +83,7 @@ class PreControllerListener
                 } else {
                     $refererUrl = $session->get('referer_url', false);
                     if ($refererUrl) {
+                        $session->remove('referer_url');
                         $event->setController(function() use ($refererUrl) {
                             return new RedirectResponse($refererUrl);
                         });
