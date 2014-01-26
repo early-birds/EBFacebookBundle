@@ -42,6 +42,11 @@
             <argument>%eb_facebook.translation%</argument>
             <argument type="service" id="translator" />
         </service>
-        
+
+        <service id="eb_facebook.listener.doctrine" class="EB\FacebookBundle\Listener\DoctrineListener">
+            <argument>%eb_facebook.user_class%</argument>
+            <tag name="doctrine.event_subscriber" connection="default" />
+        </service>
+
     </services>
 </container>

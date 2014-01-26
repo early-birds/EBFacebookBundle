@@ -27,17 +27,13 @@ class Invitation
      * @ORM\Column(name="friendId", type="bigint")
      */
     protected $friendId;
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="EB\FacebookBundle\Entity\User", inversedBy="invitation")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $sponsor;
+
+    protected $sponsor;
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -53,14 +49,14 @@ class Invitation
     public function setFriendId($friendId)
     {
         $this->friendId = $friendId;
-    
+
         return $this;
     }
 
     /**
      * Get friendId
      *
-     * @return integer 
+     * @return integer
      */
     public function getFriendId()
     {
@@ -70,20 +66,20 @@ class Invitation
     /**
      * Set sponsor
      *
-     * @param \EB\FacebookBundle\Entity\User $sponsor
+     * @param $sponsor
      * @return Invitation
      */
-    public function setSponsor(\EB\FacebookBundle\Entity\User $sponsor)
+    public function setSponsor($sponsor)
     {
         $this->sponsor = $sponsor;
-    
+
         return $this;
     }
 
     /**
      * Get sponsor
      *
-     * @return \EB\FacebookBundle\Entity\User 
+     * @return User
      */
     public function getSponsor()
     {

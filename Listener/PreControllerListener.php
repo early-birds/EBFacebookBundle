@@ -23,7 +23,7 @@ class PreControllerListener
     }
  
     public function onKernelController(FilterControllerEvent $event)
-    {           
+    {
         if (HttpKernel::MASTER_REQUEST == $event->getRequestType()) {
             $request  = $event->getRequest();
             $session  = $request->getSession();
@@ -54,7 +54,7 @@ class PreControllerListener
                 if ($this->config['skip_app'] && $this->config['tab_url']) {
                     die('<script>top.location = "'.$this->config['tab_url'].'"</script>');
                 }
-            } else if ($this->config['fixcookie'] && preg_match('/Safari/i',$_SERVER['HTTP_USER_AGENT']) && count($_COOKIE) === 0) {
+            } else if ($this->config['fixcookie'] && preg_match('/Safari/i',$_SERVER['HTTP_USER_AGENT']) && !preg_match('/Chrome/i',$_SERVER['HTTP_USER_AGENT']) && count($_COOKIE) === 0) {
                 die('<script>top.location = "'.$this->config['fixcookie'].'"</script>');
             }
 

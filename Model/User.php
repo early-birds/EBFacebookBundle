@@ -1,17 +1,11 @@
 <?php
 
-namespace EB\FacebookBundle\Entity;
+namespace EB\FacebookBundle\Model;
 
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * User
- *
- * @ORM\Table(name="eb_facebook_user")
- * @ORM\Entity()
- */
 class User extends BaseUser
 {
     /**
@@ -30,7 +24,7 @@ class User extends BaseUser
         $this->validated = false;
         $this->ip = isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : NULL;
     }
-    
+
     /**
      * @var string
      *
@@ -76,7 +70,7 @@ class User extends BaseUser
      * @ORM\Column(name="city", type="string", length=255, nullable=true)
      */
     protected $city;
-    
+
     /**
      * @var $address
      *
@@ -84,7 +78,7 @@ class User extends BaseUser
      * @ORM\Column(name="address", type="string", length=255, nullable=true)
      */
     protected $address;
-    
+
     /**
      * @var $zipcode
      *
@@ -93,7 +87,7 @@ class User extends BaseUser
      * @ORM\Column(name="zipcode", type="string", length=5, nullable=true)
      */
     protected $zipcode_fr;
-    
+
     /**
      * @var $phone
      *
@@ -106,42 +100,31 @@ class User extends BaseUser
      *
      * @ORM\Column(name="offers_email", type="boolean")
      */
-    private $offersEmail;
-    
+    protected $offersEmail;
+
     /**
      * @var $offersSms
      *
      * @ORM\Column(name="offers_sms", type="boolean")
      */
-    private $offersSms;
-    
+    protected $offersSms;
+
     /**
      * @var $validated
      *
      * @ORM\Column(name="validated", type="boolean")
      */
-    private $validated;
-    
+    protected $validated;
+
     /**
      * @var count
      *
      * @ORM\Column(name="count", type="integer", options={"default" = 1})
      */
-    private $count;
+    protected $count;
 
-    /**
-     * @ORM\OneToMany(targetEntity="EB\FacebookBundle\Entity\Invitation", mappedBy="sponsor")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $invitation;
+    protected $invitation;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="ebdata", type="text", nullable=true)
-     */
-    private $ebdata;
-    
     /**
      * @param Array
      */
@@ -177,7 +160,7 @@ class User extends BaseUser
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -193,14 +176,14 @@ class User extends BaseUser
     public function setFirstname($firstname)
     {
         $this->firstname = $firstname;
-    
+
         return $this;
     }
 
     /**
      * Get firstname
      *
-     * @return string 
+     * @return string
      */
     public function getFirstname()
     {
@@ -216,14 +199,14 @@ class User extends BaseUser
     public function setLastname($lastname)
     {
         $this->lastname = $lastname;
-    
+
         return $this;
     }
 
     /**
      * Get lastname
      *
-     * @return string 
+     * @return string
      */
     public function getLastname()
     {
@@ -239,14 +222,14 @@ class User extends BaseUser
     public function setFacebookId($facebookId)
     {
         $this->facebookId = $facebookId;
-    
+
         return $this;
     }
 
     /**
      * Get facebookId
      *
-     * @return string 
+     * @return string
      */
     public function getFacebookId()
     {
@@ -262,14 +245,14 @@ class User extends BaseUser
     public function setBirthday($birthday)
     {
         $this->birthday = $birthday;
-    
+
         return $this;
     }
 
     /**
      * Get birthday
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getBirthday()
     {
@@ -285,14 +268,14 @@ class User extends BaseUser
     public function setCity($city)
     {
         $this->city = $city;
-    
+
         return $this;
     }
 
     /**
      * Get city
      *
-     * @return string 
+     * @return string
      */
     public function getCity()
     {
@@ -308,14 +291,14 @@ class User extends BaseUser
     public function setAddress($address)
     {
         $this->address = $address;
-    
+
         return $this;
     }
 
     /**
      * Get address
      *
-     * @return string 
+     * @return string
      */
     public function getAddress()
     {
@@ -331,14 +314,14 @@ class User extends BaseUser
     public function setOffers($offers)
     {
         $this->offers = $offers;
-    
+
         return $this;
     }
 
     /**
      * Get offers
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getOffers()
     {
@@ -354,14 +337,14 @@ class User extends BaseUser
     public function setCount($count)
     {
         $this->count = $count;
-    
+
         return $this;
     }
 
     /**
      * Get count
      *
-     * @return integer 
+     * @return integer
      */
     public function getCount()
     {
@@ -369,26 +352,141 @@ class User extends BaseUser
     }
 
     /**
-     * Set ebdata
+     * Set validated
      *
-     * @param string $ebdata
+     * @param boolean $validated
      * @return User
      */
-    public function setEbdata($ebdata)
+    public function setValidated($validated)
     {
-        $this->ebdata = $ebdata;
-    
+        $this->validated = $validated;
+
         return $this;
     }
 
     /**
-     * Get ebdata
+     * Get validated
      *
-     * @return string 
+     * @return boolean
      */
-    public function getEbdata()
+    public function getValidated()
     {
-        return $this->ebdata;
+        return $this->validated;
+    }
+
+    /**
+     * Set ip
+     *
+     * @param string $ip
+     * @return User
+     */
+    public function setIp($ip)
+    {
+        $this->ip = $ip;
+
+        return $this;
+    }
+
+    /**
+     * Get ip
+     *
+     * @return string
+     */
+    public function getIp()
+    {
+        return $this->ip;
+    }
+
+    /**
+     * Set phone
+     *
+     * @param string $phone
+     * @return User
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get phone
+     *
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * Set offersEmail
+     *
+     * @param boolean $offersEmail
+     * @return User
+     */
+    public function setOffersEmail($offersEmail)
+    {
+        $this->offersEmail = $offersEmail;
+
+        return $this;
+    }
+
+    /**
+     * Get offersEmail
+     *
+     * @return boolean
+     */
+    public function getOffersEmail()
+    {
+        return $this->offersEmail;
+    }
+
+    /**
+     * Set offersSms
+     *
+     * @param boolean $offersSms
+     * @return User
+     */
+    public function setOffersSms($offersSms)
+    {
+        $this->offersSms = $offersSms;
+
+        return $this;
+    }
+
+    /**
+     * Get offersSms
+     *
+     * @return boolean
+     */
+    public function getOffersSms()
+    {
+        return $this->offersSms;
+    }
+
+    /**
+     * Set zipcode_fr
+     *
+     * @param string $zipcodeFr
+     * @return User
+     */
+    public function setZipcodeFr($zipcodeFr)
+    {
+        $this->zipcode_fr = $zipcodeFr;
+
+        return $this;
+    }
+
+    /**
+     * Get zipcode_fr
+     *
+     * @return string
+     */
+    public function getZipcodeFr()
+    {
+        return $this->zipcode_fr;
     }
 
     /**
@@ -400,7 +498,7 @@ class User extends BaseUser
     public function addInvitation(\EB\FacebookBundle\Entity\Invitation $invitation)
     {
         $this->invitation[] = $invitation;
-    
+
         return $this;
     }
 
@@ -417,148 +515,10 @@ class User extends BaseUser
     /**
      * Get invitation
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getInvitation()
     {
         return $this->invitation;
-    }
-
-    /**
-     * Set validated
-     *
-     * @param boolean $validated
-     * @return User
-     */
-    public function setValidated($validated)
-    {
-        $this->validated = $validated;
-    
-        return $this;
-    }
-
-    /**
-     * Get validated
-     *
-     * @return boolean 
-     */
-    public function getValidated()
-    {
-        return $this->validated;
-    }
-
-    /**
-     * Set ip
-     *
-     * @param string $ip
-     * @return User
-     */
-    public function setIp($ip)
-    {
-        $this->ip = $ip;
-    
-        return $this;
-    }
-
-    /**
-     * Get ip
-     *
-     * @return string 
-     */
-    public function getIp()
-    {
-        return $this->ip;
-    }
-
-    /**
-     * Set phone
-     *
-     * @param string $phone
-     * @return User
-     */
-    public function setPhone($phone)
-    {
-        $this->phone = $phone;
-    
-        return $this;
-    }
-
-    /**
-     * Get phone
-     *
-     * @return string 
-     */
-    public function getPhone()
-    {
-        return $this->phone;
-    }
-
-    /**
-     * Set offersEmail
-     *
-     * @param boolean $offersEmail
-     * @return User
-     */
-    public function setOffersEmail($offersEmail)
-    {
-        $this->offersEmail = $offersEmail;
-    
-        return $this;
-    }
-
-    /**
-     * Get offersEmail
-     *
-     * @return boolean 
-     */
-    public function getOffersEmail()
-    {
-        return $this->offersEmail;
-    }
-
-    /**
-     * Set offersSms
-     *
-     * @param boolean $offersSms
-     * @return User
-     */
-    public function setOffersSms($offersSms)
-    {
-        $this->offersSms = $offersSms;
-    
-        return $this;
-    }
-
-    /**
-     * Get offersSms
-     *
-     * @return boolean 
-     */
-    public function getOffersSms()
-    {
-        return $this->offersSms;
-    }
-
-    /**
-     * Set zipcode_fr
-     *
-     * @param string $zipcodeFr
-     * @return User
-     */
-    public function setZipcodeFr($zipcodeFr)
-    {
-        $this->zipcode_fr = $zipcodeFr;
-    
-        return $this;
-    }
-
-    /**
-     * Get zipcode_fr
-     *
-     * @return string 
-     */
-    public function getZipcodeFr()
-    {
-        return $this->zipcode_fr;
     }
 }
