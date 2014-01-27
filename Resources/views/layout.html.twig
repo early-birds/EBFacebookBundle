@@ -14,7 +14,7 @@
         {% block javascripts %}
             <script src="//code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
             {% javascripts  'bundles/ebfacebook/js/jquery.qtip.min.js'
-                            'bundles/ebfacebook/js/main.js'
+                            'bundles/ebfacebook/js/ebfacebook.js'
             %}
             <script src="{{ asset_url }}" type="text/javascript"></script>
             {% endjavascripts %}
@@ -25,9 +25,9 @@
 
         <!-- Vars usable in JS -->
         <input type="hidden" id="pathRouteInSession" value="{{ path('route_in_session') }}" />
+        <input type="hidden" id="isConnected" value="{{ is_granted('IS_AUTHENTICATED_FULLY') ? 'yes' : 'no' }}" />
 
-
-    {% block layout_msg %}
+        {% block layout_msg %}
         <ul style='display:none'>
             <li id='layout.invitation'>{{ 'layout.invitation'|trans({}, "EBFacebookBundle") }}</li>
         </ul>

@@ -8,7 +8,9 @@ function _(id) {
 
 var EbFacebook = function () {
   var _this = this;
+  this.isConnected = false;
   this.permissions = '';
+  this.pathRouteInSession = null;
 
   $(document).ready(function () {
     _this.init();
@@ -23,9 +25,11 @@ EbFacebook.prototype.setPermissions = function (permissions) {
 
 EbFacebook.prototype.init = function () {
   this.pathRouteInSession = $('#pathRouteInSession').val();
+  this.isConnected = $('#isConnected').val() === 'yes' ? true : false;
   this.initFb();
   this.initUserForm();
   this.initPopin();
+  this.initLoginBtns();
 };
 
 EbFacebook.prototype.addError = function (e, type, text) {
@@ -120,10 +124,6 @@ EbFacebook.prototype.initUserFormAsterisks = function () {
 };
 
 EbFacebook.prototype.initFb = function () {
-  $('.fbLogin').click(function (e) {
-    e.preventDefault();
-    fbLogin();
-  });
   $('.fbPostWall').click(function (e) {
     e.preventDefault();
     var obj = { method: 'feed' };
@@ -160,7 +160,7 @@ EbFacebook.prototype.initFb = function () {
   });
 };
 
-EbFacebook.prototype.saveReferer = function (data, next) {
+EbFacebook.prototype.saveTarget = function (data, next) {
   var _this = this;
   if (typeof data === 'object') {
     data.direct_url = data.direct_url || null;
@@ -183,19 +183,19 @@ EbFacebook.prototype.saveReferer = function (data, next) {
   } else if (typeof next === 'function') return next();
 };
 
-EbFacebook.prototype.ebLogin = function (refererData) {
+EbFacebook.prototype.ebLogin = function (targetData) {
   var _this = this;
 
   var login = function (n) {
     FB.login(
       function () {
-        if (typeof n !== 'undefined') return n();
+        if (typeof n === 'function') return n();
       }, { scope: _this.permissions }
     );
   };
 
-  if (refererData) {
-    _this.saveReferer(refererData, function () {
+  if (targetData) {
+    _this.saveTarget(targetData, function () {
       login();
     });
   } else login();
@@ -205,21 +205,23 @@ EbFacebook.prototype.initLoginBtns = function () {
   var _this = this;
 
   $('.ebLogin').click(function (e) {
-    e.preventDefault();
-    var refererData = false;
-    var route = $(this).data('route');
-    var route_params = $(this).data('route_params');
-    var direct_url = (!route && !route_params && $(this).attr('href') !== '#') ? $(this).attr('href') : false;
+    if (!_this.isConnected || $(this).data('force')) {
+      e.preventDefault();
+      var targetData = false;
+      var route = $(this).data('route');
+      var route_params = $(this).data('route_params');
+      var direct_url = (!route && !route_params && $(this).attr('href') !== '#') ? $(this).attr('href') : false;
 
-    if (route || route_params || direct_url) {
-      refererData = {
-        direct_url: direct_url,
-        route: route,
-        route_params: route_params
-      };
+      if (!$(this).data('default') && (route || route_params || direct_url)) {
+        targetData = {
+          direct_url: direct_url,
+          route: route,
+          route_params: route_params
+        };
+      }
+
+      _this.ebLogin(targetData);
     }
-
-    _this.ebLogin(refererData);
   });
 };
 

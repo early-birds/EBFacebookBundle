@@ -169,7 +169,7 @@ EBFacebookBundle
 
     {% block javascripts %}
         {{ parent() }}
-        {% javascripts 'bundles/acmedemo/js/main.js'
+        {% javascripts 'bundles/acmedemo/js/ebfacebook.js'
         %}
         <script src="{{ asset_url }}" type="text/javascript"></script>
         {% endjavascripts %}

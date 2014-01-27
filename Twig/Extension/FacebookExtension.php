@@ -28,7 +28,7 @@ class FacebookExtension extends \Twig_Extension
     public function initPermissions() {
         $permissions = implode(',', $this->container->getParameter('eb_facebook.permissions'));
 
-        return ("<script type=\"text/javascript\">ebFacebook.setPermissions('".$permissions."');</script>");
+        return ("<script type=\"text/javascript\">$(document).ready(function () { ebFacebook.setPermissions('".$permissions."'); }); </script>");
     }
 
     public function getName()
