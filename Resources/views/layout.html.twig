@@ -22,8 +22,12 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        
-        {% block layout_msg %}
+
+        <!-- Vars usable in JS -->
+        <input type="hidden" id="pathRouteInSession" value="{{ path('route_in_session') }}" />
+
+
+    {% block layout_msg %}
         <ul style='display:none'>
             <li id='layout.invitation'>{{ 'layout.invitation'|trans({}, "EBFacebookBundle") }}</li>
         </ul>
@@ -59,7 +63,7 @@
         </div>
                     
         {{ facebook_initialize({'xfbml': true, 'fbAsyncInit': 'onFbInit();'}) }}
-        {{ facebook_login_function() }}
+        {{ ebfacebook_init_permissions() }}
         
         <script type="text/javascript" >
             function goLogIn(){
