@@ -36,7 +36,7 @@ class FacebookExtension extends \Twig_Extension
         $value = isset($params['value']) ? $params['value'] : 'Participer';
         $class = isset($params['class']) ? $params['class'] : 'btnFbLogin';
 
-        return ("<input type='button' value='".$value."' class='".$class."' onclick='fbLogin();return false;' />");
+        return ("<input type='button' value='".$value."' class='".$class."' onclick='ebFacebook.ebLogin();return false;' />");
     }
 
     public function getName()
