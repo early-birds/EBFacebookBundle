@@ -31,6 +31,13 @@ class FacebookExtension extends \Twig_Extension
         return ("<script type=\"text/javascript\">$(document).ready(function () { ebFacebook.setPermissions('".$permissions."'); }); </script>");
     }
 
+    public function renderCustomLoginButton($params = array()) {
+        $value = isset($params['value']) ? $params['value'] : 'Participer';
+        $class = isset($params['class']) ? $params['class'] : 'btnFbLogin';
+
+        return ("<input type='button' value='".$value."' class='".$class."' onclick='fbLogin();return false;' />");
+    }
+
     public function getName()
     {
         return 'twig_extension_eb_facebook';
