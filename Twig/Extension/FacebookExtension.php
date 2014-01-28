@@ -22,6 +22,7 @@ class FacebookExtension extends \Twig_Extension
     {
         return array(
             'ebfacebook_init_permissions' => new \Twig_Function_Method($this, 'initPermissions', array('is_safe' => array('html'))),
+            'facebook_custom_login_button' => new \Twig_Function_Method($this, 'renderCustomLoginButton', array('is_safe' => array('html')))
         );
     }
 
