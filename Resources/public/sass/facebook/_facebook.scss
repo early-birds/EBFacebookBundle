@@ -1,0 +1,10 @@
+.fb-widget {
+    color: #333333;
+    direction: ltr;
+    line-height: 1.28;
+    text-align: left;
+    font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;
+
+    @import 'generic';
+    @import 'popin_photos';
+}

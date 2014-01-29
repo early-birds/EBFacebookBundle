@@ -28,6 +28,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('skip_app')->defaultValue(false)->end()
                 ->scalarNode('culture')->defaultValue('fr_FR')->end()
                 ->scalarNode('fixcookie')->defaultValue(false)->end()
+                ->scalarNode('default_target_route')->defaultValue('home')->end()
                 ->scalarNode('user_class')->defaultValue('EB\FacebookBundle\Entity\User')->end()
                 ->scalarNode('form_class')->defaultValue('EB\FacebookBundle\Form\UserType')->end()
                 ->scalarNode('translation')->defaultValue('EBFacebookBundle')->end()

@@ -48,5 +48,10 @@
             <tag name="doctrine.event_subscriber" connection="default" />
         </service>
 
+        <service id="eb.facebook.handler.authentication" class="EB\FacebookBundle\Handler\AuthenticationHandler">
+            <argument type="service" id="router" />
+            <argument>%eb_facebook.default_target_route%</argument>
+        </service>
+
     </services>
 </container>

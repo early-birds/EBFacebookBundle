@@ -25,6 +25,7 @@
 
         <!-- Vars usable in JS -->
         <input type="hidden" id="pathRouteInSession" value="{{ path('route_in_session') }}" />
+        <input type="hidden" id="pathSecurityLogin" value="{{ path('_security_check') }}" />
         <input type="hidden" id="isConnected" value="{{ is_granted('IS_AUTHENTICATED_FULLY') ? 'yes' : 'no' }}" />
 
         {% block layout_msg %}
@@ -61,28 +62,18 @@
             </div>
             {% endblock footer %}
         </div>
-                    
+
         {{ facebook_initialize({'xfbml': true, 'fbAsyncInit': 'onFbInit();'}) }}
         {{ ebfacebook_init_permissions() }}
-        
+
         <script type="text/javascript" >
-            function goLogIn(){
-                window.location = "{{ path('_security_check') }}";
-            }
             function onFbInit() {
                 if (typeof(FB) !== 'undefined' && FB !== null ) {
                     FB.Canvas.setAutoGrow();
-                    FB.Event.subscribe('auth.statusChange', function(response) {
-                        if (response.session || response.authResponse) {
-                            setTimeout(goLogIn, 50);
-                        } else {
-                            window.location = "{{ path('_security_logout') }}";
-                        }
-                    });
                 }
             }
         </script>
-        
+
         {% block more %}
         {% endblock more %}
     </body>

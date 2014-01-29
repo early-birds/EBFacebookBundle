@@ -11,6 +11,7 @@ var EbFacebook = function () {
   this.isConnected = false;
   this.permissions = '';
   this.pathRouteInSession = null;
+  this.pathSecurityLogin = null;
 
   $(document).ready(function () {
     _this.init();
@@ -24,12 +25,14 @@ EbFacebook.prototype.setPermissions = function (permissions) {
 };
 
 EbFacebook.prototype.init = function () {
+  /* Init vars with DOM */
   this.pathRouteInSession = $('#pathRouteInSession').val();
+  this.pathSecurityLogin = $('#pathSecurityLogin').val();
   this.isConnected = $('#isConnected').val() === 'yes' ? true : false;
+
   this.initFb();
   this.initUserForm();
   this.initPopin();
-  this.initLoginBtns();
 };
 
 EbFacebook.prototype.addError = function (e, type, text) {
@@ -123,7 +126,51 @@ EbFacebook.prototype.initUserFormAsterisks = function () {
   }
 };
 
+EbFacebook.prototype.saveTarget = function (data, next) {
+  var _this = this;
+  if (typeof data === 'object') {
+    data.direct_url = data.direct_url || null;
+    data.route = data.route || null;
+    data.route_params = data.route_params || null;
+
+    $.ajax({
+      type: 'POST',
+      url: _this.pathRouteInSession,
+      data: {
+        direct_url: data.direct_url,
+        route: data.route,
+        route_params: data.route_params
+      }
+    }).done(function (data) {
+      if (data && data.res && typeof next === 'function') return next(data);
+    });
+
+  } else if (typeof next === 'function') return next();
+};
+
+EbFacebook.prototype.fbLogin = function (targetData) {
+  var _this = this;
+
+  var gologin = function () {
+    window.location = _this.pathSecurityLogin;
+  };
+
+  FB.login(
+    function (res) {
+      if (res.status) {
+        if (targetData) {
+          _this.saveTarget(targetData, function () {
+            gologin();
+          });
+        } else gologin();
+      }
+    }, { scope: _this.permissions }
+  );
+};
+
 EbFacebook.prototype.initFb = function () {
+  var _this = this;
+
   $('.fbPostWall').click(function (e) {
     e.preventDefault();
     var obj = { method: 'feed' };
@@ -133,6 +180,7 @@ EbFacebook.prototype.initFb = function () {
     if ($(this).data('picture')) obj.picture = $(this).data('picture');
     FB.ui(obj, function () { });
   });
+
   $('.fbInvit').click(function (e) {
     e.preventDefault();
     var url = $(this).data('path');
@@ -158,53 +206,8 @@ EbFacebook.prototype.initFb = function () {
       }
     });
   });
-};
 
-EbFacebook.prototype.saveTarget = function (data, next) {
-  var _this = this;
-  if (typeof data === 'object') {
-    data.direct_url = data.direct_url || null;
-    data.route = data.route || null;
-    data.route_params = data.route_params || null;
-
-    $.ajax({
-      type: 'POST',
-      url: _this.pathRouteInSession,
-      data: {
-        direct_url: data.direct_url,
-        route: data.route,
-        route_params: data.route_params
-      }
-    }).done(function (data) {
-      if (data && data.res && typeof next === 'function') return next(data);
-      else noty({ text: 'Une erreur est survenue', type: 'warning', layout: 'top' });
-    });
-
-  } else if (typeof next === 'function') return next();
-};
-
-EbFacebook.prototype.ebLogin = function (targetData) {
-  var _this = this;
-
-  var login = function (n) {
-    FB.login(
-      function () {
-        if (typeof n === 'function') return n();
-      }, { scope: _this.permissions }
-    );
-  };
-
-  if (targetData) {
-    _this.saveTarget(targetData, function () {
-      login();
-    });
-  } else login();
-};
-
-EbFacebook.prototype.initLoginBtns = function () {
-  var _this = this;
-
-  $('.ebLogin').click(function (e) {
+  $('.fbLogin').click(function (e) {
     if (!_this.isConnected || $(this).data('force')) {
       e.preventDefault();
       var targetData = false;
@@ -212,7 +215,7 @@ EbFacebook.prototype.initLoginBtns = function () {
       var route_params = $(this).data('route_params');
       var direct_url = (!route && !route_params && $(this).attr('href') !== '#') ? $(this).attr('href') : false;
 
-      if (!$(this).data('default') && (route || route_params || direct_url)) {
+      if ((typeof $(this).data('default') === 'undefined' || $(this).data('default') === 'false') && (route || route_params || direct_url)) {
         targetData = {
           direct_url: direct_url,
           route: route,
@@ -220,7 +223,7 @@ EbFacebook.prototype.initLoginBtns = function () {
         };
       }
 
-      _this.ebLogin(targetData);
+      _this.fbLogin(targetData);
     }
   });
 };

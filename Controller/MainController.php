@@ -130,7 +130,7 @@ class MainController extends Controller
 
         try {
             $data['url'] = $direct_url ? $direct_url : $this->generateUrl($route, $route_params);
-            $request->getSession()->set('referer_url', $data['url']);
+            $request->getSession()->set('target_url', $data['url']);
         } catch (\Exception $e) {
             $data['res'] = 0;
         }

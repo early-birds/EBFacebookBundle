@@ -1,0 +1,102 @@
+.popin-fb {
+    
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right : 0;
+    bottom: 0;
+    background-color: rgba(252, 252, 252, 0.9);
+    
+    .fb-dialog-loader{
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: image-url('facebook/ajax-loader-white.gif') no-repeat center center white;
+        height: 100%;
+        z-index: 500;
+    }
+    a.read-facebook-albums{
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+        
+    popin-fb-wrap {
+        width: 734px;
+    }
+    
+    .popin-fb-n1{
+        position:absolute;
+        left: 50%;
+        top: 38px;
+        background: none repeat scroll 0 0 rgba(82, 82, 82, 0.7);
+        border-radius: 8px;
+        padding: 10px;
+        margin-left: -367px;
+        .popin-fb-n2{
+            direction: ltr;
+            outline: medium none;
+            .popin-fb-title {
+                background: none repeat scroll 0 0 #6D84B4;
+                border-color: #3B5998 #3B5998 -moz-use-text-color;
+                border-image: none;
+                border-style: solid solid none;
+                border-width: 1px 1px medium;
+                color: #FFFFFF;
+                font-size: 14px;
+                font-weight: bold;
+                margin: 0;
+                text-transform: none;
+                span {
+                    display: block;
+                    padding: 5px 10px;
+                }
+            }
+            .popin-fb-n3{
+                -moz-border-bottom-colors: none;
+                -moz-border-left-colors: none;
+                -moz-border-right-colors: none;
+                -moz-border-top-colors: none;
+                background: none repeat scroll 0 0 #FFFFFF;
+                border-color: #555555;
+                border-image: none;
+                border-right: 1px solid #555555;
+                border-style: solid;
+                border-width: 0 1px 1px;
+                .popin-fb-n4{
+                     border-bottom: 1px solid #CCCCCC;
+                     padding: 0px;
+                    .popin-fb-n5{
+                        height: 500px;
+                        overflow: hidden;
+                        position: relative;
+                        .fb-photos-wrap{
+                            margin: 5px;
+                            ul.fb-photos {
+                                width: 676px;
+                                li {
+                                    display: block;
+                                    float: left;
+                                }
+                            }
+                        }
+                    }
+                }
+                .fb-popin-buttons{
+                    background: none repeat scroll 0 0 #F2F2F2;
+                    padding: 8px 10px;
+                    position: relative;
+                    .fb-popin-buttons-msg{
+                        line-height: 17px;
+                        padding-top: 4px;
+                    }
+                }
+            }
+        }
+    }
+}
+
