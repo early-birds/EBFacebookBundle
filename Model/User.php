@@ -4,7 +4,6 @@ namespace EB\FacebookBundle\Model;
 
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class User extends BaseUser
 {
@@ -19,8 +18,6 @@ class User extends BaseUser
     {
         parent::__construct();
         $this->count = 1;
-        $this->offersEmail = 0;
-        $this->offersSms = 0;
         $this->validated = false;
         $this->ip = isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : NULL;
     }
@@ -35,7 +32,6 @@ class User extends BaseUser
     /**
      * @var $firstname
      *
-     * @Assert\NotBlank(message = "eb_facebook.required")
      * @ORM\Column(name="firstname", type="string", length=255)
      */
     protected $firstname;
@@ -43,7 +39,6 @@ class User extends BaseUser
     /**
      * @var $lastname
      *
-     * @Assert\NotBlank(message = "eb_facebook.required")
      * @ORM\Column(name="lastname", type="string", length=255)
      */
     protected $lastname;
@@ -58,7 +53,6 @@ class User extends BaseUser
     /**
      * @var $birthday
      *
-     * @Assert\NotBlank(message = "eb_facebook.required")
      * @ORM\Column(name="birthday", type="date", nullable=true)
      */
     protected $birthday;
@@ -66,7 +60,6 @@ class User extends BaseUser
     /**
      * @var $city
      *
-     * @Assert\NotBlank(message = "eb_facebook.required")
      * @ORM\Column(name="city", type="string", length=255, nullable=true)
      */
     protected $city;
@@ -74,7 +67,6 @@ class User extends BaseUser
     /**
      * @var $address
      *
-     * @Assert\NotBlank(message = "eb_facebook.required")
      * @ORM\Column(name="address", type="string", length=255, nullable=true)
      */
     protected $address;
@@ -82,8 +74,6 @@ class User extends BaseUser
     /**
      * @var $zipcode
      *
-     * @Assert\NotBlank(message = "eb_facebook.required")
-     * @Assert\Regex(pattern="/^[0-9]{5}$/", message = "eb_facebook.invalid")
      * @ORM\Column(name="zipcode", type="string", length=5, nullable=true)
      */
     protected $zipcode_fr;
@@ -98,14 +88,14 @@ class User extends BaseUser
     /**
      * @var $offersEmail
      *
-     * @ORM\Column(name="offers_email", type="boolean")
+     * @ORM\Column(name="offers_email", type="boolean", nullable=true)
      */
     protected $offersEmail;
 
     /**
      * @var $offersSms
      *
-     * @ORM\Column(name="offers_sms", type="boolean")
+     * @ORM\Column(name="offers_sms", type="boolean", nullable=true)
      */
     protected $offersSms;
 

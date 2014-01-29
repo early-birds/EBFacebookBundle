@@ -1,10 +1,4 @@
-/* global $:false */
-/* global jQuery:false */
-/* global FB:false */
-
-function _(id) {
-  return $(document.getElementById(id)).html();
-}
+/* global $, jQuery:false, FB */
 
 var EbFacebook = function () {
   var _this = this;
@@ -12,14 +6,25 @@ var EbFacebook = function () {
   this.permissions = '';
   this.pathRouteInSession = null;
   this.pathSecurityLogin = null;
+  this.me = null;
 
   $(document).ready(function () {
     _this.init();
   });
 };
 
+EbFacebook.prototype._ = function (id) {
+  return $(document.getElementById(id)).html();
+};
+
 EbFacebook.prototype.setPermissions = function (permissions) {
   this.permissions = permissions;
+
+  return this;
+};
+
+EbFacebook.prototype.setMe = function (userData) {
+  this.me = JSON.parse(userData);
 
   return this;
 };
@@ -36,8 +41,10 @@ EbFacebook.prototype.init = function () {
 };
 
 EbFacebook.prototype.addError = function (e, type, text) {
+  var _this = this;
+
   if (typeof text === 'undefined') {
-    text = type === 'checkbox' ? _('eb_facebook.check') : _('eb_facebook.required');
+    text = type === 'checkbox' ? _this._('eb_facebook.check') : _this._('eb_facebook.required');
   }
   e.qtip({
     content: {
@@ -102,7 +109,7 @@ EbFacebook.prototype.initUserFormErrors = function () {
           var val = e.val();
 
           if (!reg.test(val)) {
-            _this.addError(e, type, _('eb_facebook.invalid'));
+            _this.addError(e, type, _this._('eb_facebook.invalid'));
             error = true;
           }
         }
@@ -148,7 +155,7 @@ EbFacebook.prototype.saveTarget = function (data, next) {
   } else if (typeof next === 'function') return next();
 };
 
-EbFacebook.prototype.fbLogin = function (targetData) {
+EbFacebook.prototype.login = function (targetData) {
   var _this = this;
 
   var gologin = function () {
@@ -199,7 +206,7 @@ EbFacebook.prototype.initFb = function () {
             if (res > 0) {
               window.location.reload();
             } else {
-              window.alert(_('layout.invitation'));
+              window.alert(_this._('layout.invitation'));
             }
           }
         });
@@ -223,11 +230,29 @@ EbFacebook.prototype.initFb = function () {
         };
       }
 
-      _this.fbLogin(targetData);
+      _this.login(targetData);
     }
   });
 };
 
+EbFacebook.prototype.picture = function (facebookId, width, height) {
+  facebookId = facebookId || '100007098372755';
+
+  var url = '//graph.facebook.com/' + facebookId + '/picture';
+  if (width || height) {
+    url += '?';
+    if (width) url += 'width=' + width;
+    if (width && height) url += '&';
+    if (height) url += 'height=' + height;
+  }
+
+  return url;
+};
+
+EbFacebook.prototype.myPicture = function (width, height) {
+  return this.picture(this.me.facebookId, width, height);
+};
+
 if (typeof jQuery !== 'undefined') {
-  var ebFacebook = new EbFacebook();
+  var EFB = new EbFacebook();
 }

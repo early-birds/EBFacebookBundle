@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class FacebookExtension extends \Twig_Extension
 {
     protected $container;
- 
+
     /**
     * Constructor.
     *
@@ -21,15 +21,38 @@ class FacebookExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'ebfacebook_init_permissions' => new \Twig_Function_Method($this, 'initPermissions', array('is_safe' => array('html'))),
+            'ebfacebook_initialize' => new \Twig_Function_Method($this, 'initialize', array('is_safe' => array('html'))),
             'facebook_custom_login_button' => new \Twig_Function_Method($this, 'renderCustomLoginButton', array('is_safe' => array('html')))
         );
     }
 
-    public function initPermissions() {
+    public function initialize($params = array()) {
+
+        $arrayUser = null;
+        if (isset($params['user']) && $params['user']) {
+            $user = $params['user'];
+            $arrayUser = array(
+                "fullname"      => $user->getFirstname() . " " .$user->getLastname(),
+                "firstname"     => $user->getFirstname(),
+                "lastname"      => $user->getLastname(),
+                "facebookId"    => $user->getFacebookId()
+            );
+        }
+
         $permissions = implode(',', $this->container->getParameter('eb_facebook.permissions'));
 
-        return ("<script type=\"text/javascript\">$(document).ready(function () { ebFacebook.setPermissions('".$permissions."'); }); </script>");
+        $script  = "<script type=\"text/javascript\">";
+        $script .= "$(document).ready(function () {";
+        $script .= "if (typeof EFB !== 'undefined' && EFB !== null) {";
+
+        if ($permissions) $script .= "EFB.setPermissions('".$permissions."');";
+        if ($arrayUser) $script .= "EFB.setMe('".json_encode($arrayUser)."');";
+
+        $script .= "}"; //end if
+        $script .= "});"; //end document.ready
+        $script .= "</script>"; //end script
+
+        return $script;
     }
 
     public function renderCustomLoginButton($params = array()) {

@@ -64,7 +64,7 @@
         </div>
 
         {{ facebook_initialize({'xfbml': true, 'fbAsyncInit': 'onFbInit();'}) }}
-        {{ ebfacebook_init_permissions() }}
+        {{ ebfacebook_initialize({'user': app.user }) }}
 
         <script type="text/javascript" >
             function onFbInit() {
