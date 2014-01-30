@@ -18,12 +18,14 @@ class FacebookProvider implements UserProviderInterface
     protected $facebook;
     protected $userManager;
     protected $validator;
+    protected $extendedAccessToken;
 
-    public function __construct(BaseFacebook $facebook, $userManager, $validator)
+    public function __construct(BaseFacebook $facebook, $userManager, $validator, $extendedAccessToken)
     {
         $this->facebook = $facebook;
         $this->userManager = $userManager;
         $this->validator = $validator;
+        $this->extendedAccessToken = $extendedAccessToken;
     }
 
     public function getFacebook() {

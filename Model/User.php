@@ -114,6 +114,8 @@ class User extends BaseUser
     protected $count;
 
     protected $invitation;
+    protected $extendAccessToken;
+    protected $expirationExtendAccessToken;
 
     /**
      * @param Array
