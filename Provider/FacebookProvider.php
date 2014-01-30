@@ -75,6 +75,12 @@ class FacebookProvider implements UserProviderInterface
             if (count($this->validator->validate($user, 'Facebook'))) {
                 throw new UsernameNotFoundException('The facebook user could not be stored');
             }
+
+            if ($this->extendedAccessToken) {
+                $this->facebook->setExtendedAccessToken();
+                $user->setExtendedAccessToken($this->facebook->getAccessToken());
+                $user->setExpirationExtendedAccessToken(new \DateTime('+2 month'));
+            }
             $this->userManager->updateUser($user);
         }
 
@@ -92,5 +98,14 @@ class FacebookProvider implements UserProviderInterface
         }
 
         return $this->loadUserByUsername($user->getFacebookId());
+    }
+
+    public function refreshExtendAccessToken()
+    {
+        if ($this->extendedAccessToken) {
+            $this->facebook->setExtendedAccessToken();
+            var_dump($this->facebook->getAccessToken());
+            exit;
+        }
     }
 }

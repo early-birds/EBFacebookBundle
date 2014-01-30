@@ -114,8 +114,8 @@ class User extends BaseUser
     protected $count;
 
     protected $invitation;
-    protected $extendAccessToken;
-    protected $expirationExtendAccessToken;
+    protected $extendedAccessToken;
+    protected $expirationExtendedAccessToken;
 
     /**
      * @param Array
@@ -515,25 +515,48 @@ class User extends BaseUser
     }
 
     /**
-     * Set expirationExtendAccessToken
+     * Set extendedAccessToken
      *
-     * @param \DateTime $expirationExtendAccessToken
+     * @param string $extendedAccessToken
      * @return User
      */
-    public function setExpirationExtendAccessToken($expirationExtendAccessToken)
+    public function setExtendedAccessToken($extendedAccessToken)
     {
-        $this->expirationExtendAccessToken = $expirationExtendAccessToken;
+        $this->extendedAccessToken = $extendedAccessToken;
 
         return $this;
     }
 
     /**
-     * Get expirationExtendAccessToken
+     * Get extendedAccessToken
+     *
+     * @return string
+     */
+    public function getExtendedAccessToken()
+    {
+        return $this->extendedAccessToken;
+    }
+
+    /**
+     * Set expirationExtendedAccessToken
+     *
+     * @param \DateTime $expirationExtendedAccessToken
+     * @return User
+     */
+    public function setExpirationExtendedAccessToken($expirationExtendedAccessToken)
+    {
+        $this->expirationExtendedAccessToken = $expirationExtendedAccessToken;
+
+        return $this;
+    }
+
+    /**
+     * Get expirationExtendedAccessToken
      *
      * @return \DateTime
      */
-    public function getExpirationExtendAccessToken()
+    public function getExpirationExtendedAccessToken()
     {
-        return $this->expirationExtendAccessToken;
+        return $this->expirationExtendedAccessToken;
     }
 }

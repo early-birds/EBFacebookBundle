@@ -9,12 +9,12 @@ use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 class DoctrineListener implements EventSubscriber
 {
     protected $userClass;
-    protected $extendedAccessToken;
+    protected $extendededAccessToken;
 
-    public function __construct($userClass, $extendedAccessToken)
+    public function __construct($userClass, $extendededAccessToken)
     {
         $this->userClass = $userClass;
-        $this->extendedAccessToken = $extendedAccessToken;
+        $this->extendededAccessToken = $extendededAccessToken;
     }
 
     public function getSubscribedEvents()
@@ -48,13 +48,13 @@ class DoctrineListener implements EventSubscriber
                     'mappedBy'      => 'sponsor'
                 ));
 
-                if ($this->extendedAccessToken) {
+                if ($this->extendededAccessToken) {
                     $metadata->mapField(array(
-                        'fieldName' => 'extendAccessToken',
+                        'fieldName' => 'extendedAccessToken',
                         'type' => 'text'
                     ));
                     $metadata->mapField(array(
-                        'fieldName' => 'expirationExtendAccessToken',
+                        'fieldName' => 'expirationExtendedAccessToken',
                         'type' => 'datetime'
                     ));
                 }
