@@ -513,4 +513,27 @@ class User extends BaseUser
     {
         return $this->invitation;
     }
+
+    /**
+     * Set expirationExtendAccessToken
+     *
+     * @param \DateTime $expirationExtendAccessToken
+     * @return User
+     */
+    public function setExpirationExtendAccessToken($expirationExtendAccessToken)
+    {
+        $this->expirationExtendAccessToken = $expirationExtendAccessToken;
+
+        return $this;
+    }
+
+    /**
+     * Get expirationExtendAccessToken
+     *
+     * @return \DateTime
+     */
+    public function getExpirationExtendAccessToken()
+    {
+        return $this->expirationExtendAccessToken;
+    }
 }
