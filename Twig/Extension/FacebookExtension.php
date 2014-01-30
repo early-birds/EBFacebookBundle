@@ -32,10 +32,12 @@ class FacebookExtension extends \Twig_Extension
         if (isset($params['user']) && $params['user']) {
             $user = $params['user'];
             $arrayUser = array(
+                "id"            => $user->getId(),
                 "fullname"      => $user->getFirstname() . " " .$user->getLastname(),
                 "firstname"     => $user->getFirstname(),
                 "lastname"      => $user->getLastname(),
-                "facebookId"    => $user->getFacebookId()
+                "facebookId"    => $user->getFacebookId(),
+                "roles"         => $user->getRoles()
             );
         }
 
