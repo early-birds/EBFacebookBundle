@@ -32,16 +32,30 @@ class User extends BaseUser
     /**
      * @var $firstname
      *
-     * @ORM\Column(name="firstname", type="string", length=255)
+     * @ORM\Column(name="firstname", type="string", length=255, nullable=true)
      */
     protected $firstname;
 
     /**
      * @var $lastname
      *
-     * @ORM\Column(name="lastname", type="string", length=255)
+     * @ORM\Column(name="lastname", type="string", length=255, nullable=true)
      */
     protected $lastname;
+
+    /**
+     * @var $middlename
+     *
+     * @ORM\Column(name="middlename", type="string", length=255, nullable=true)
+     */
+    protected $middlename;
+
+    /**
+     * @var $fullname
+     *
+     * @ORM\Column(name="fullname", type="string", length=255, nullable=true)
+     */
+    protected $fullname;
 
     /**
      * @var $facebookId
@@ -126,12 +140,14 @@ class User extends BaseUser
             $this->setFacebookId($fbdata['id']);
             $this->addRole('ROLE_FACEBOOK');
         }
-        if (isset($fbdata['first_name'])) {
-            $this->setFirstname($fbdata['first_name']);
-        }
-        if (isset($fbdata['last_name'])) {
-            $this->setLastname($fbdata['last_name']);
-        }
+        isset($fbdata['username']) ? $this->setUsername($fbdata['username']) : $this->setUsername($fbdata['id']);
+        if (!isset($fbdata['email'])) $fbdata['email'] = $this->getUsername() . "@facebook.com";
+
+        if (isset($fbdata['name'])) $this->setFullname($fbdata['name']);
+        if (isset($fbdata['first_name'])) $this->setFirstname($fbdata['first_name']);
+        if (isset($fbdata['middle_name'])) $this->setMiddlename($fbdata['middle_name']);
+        if (isset($fbdata['last_name'])) $this->setLastname($fbdata['last_name']);
+
         if (isset($fbdata['location']['name'])) {
             $split = explode(',', $fbdata['location']['name']);
             $this->setCity(trim($split[0]));
@@ -143,10 +159,6 @@ class User extends BaseUser
         if (isset($fbdata['email'])) {
             $this->setEmail($fbdata['email']);
         }
-        if (isset($fbdata['username']))
-            $this->setUsername($fbdata['username']);
-        else
-            $this->setUsername($fbdata['id']);
     }
 
     /**
@@ -203,6 +215,52 @@ class User extends BaseUser
     public function getLastname()
     {
         return $this->lastname;
+    }
+
+    /**
+     * Set middlename
+     *
+     * @param string $middlename
+     * @return User
+     */
+    public function setMiddlename($middlename)
+    {
+        $this->middlename = $middlename;
+
+        return $this;
+    }
+
+    /**
+     * Get middlename
+     *
+     * @return string
+     */
+    public function getMiddlename()
+    {
+        return $this->middlename;
+    }
+
+    /**
+     * Set fullname
+     *
+     * @param string $fullname
+     * @return User
+     */
+    public function setFullname($fullname)
+    {
+        $this->fullname = $fullname;
+
+        return $this;
+    }
+
+    /**
+     * Get fullname
+     *
+     * @return string
+     */
+    public function getFullname()
+    {
+        return $this->fullname;
     }
 
     /**

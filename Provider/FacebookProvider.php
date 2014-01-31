@@ -80,6 +80,7 @@ class FacebookProvider implements UserProviderInterface
                 $this->facebook->setExtendedAccessToken();
                 $user->setExtendedAccessToken($this->facebook->getAccessToken());
                 $user->setExpirationExtendedAccessToken(new \DateTime('+2 month'));
+                $this->facebook->setAccessToken($user->getExtendedAccessToken());
             }
             $this->userManager->updateUser($user);
         }
@@ -98,14 +99,5 @@ class FacebookProvider implements UserProviderInterface
         }
 
         return $this->loadUserByUsername($user->getFacebookId());
-    }
-
-    public function refreshExtendAccessToken()
-    {
-        if ($this->extendedAccessToken) {
-            $this->facebook->setExtendedAccessToken();
-            var_dump($this->facebook->getAccessToken());
-            exit;
-        }
     }
 }
