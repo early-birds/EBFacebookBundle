@@ -51,11 +51,13 @@ class DoctrineListener implements EventSubscriber
                 if ($this->extendededAccessToken) {
                     $metadata->mapField(array(
                         'fieldName' => 'extendedAccessToken',
-                        'type' => 'text'
+                        'type' => 'text',
+                        'nullable' => true
                     ));
                     $metadata->mapField(array(
                         'fieldName' => 'expirationExtendedAccessToken',
-                        'type' => 'datetime'
+                        'type' => 'datetime',
+                        'nullable' => true
                     ));
                 }
             }
