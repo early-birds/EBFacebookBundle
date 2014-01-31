@@ -6,6 +6,7 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 use \BaseFacebook;
 use \FacebookApiException;
@@ -19,13 +20,15 @@ class FacebookProvider implements UserProviderInterface
     protected $userManager;
     protected $validator;
     protected $extendedAccessToken;
+    protected $request;
 
-    public function __construct(BaseFacebook $facebook, $userManager, $validator, $extendedAccessToken)
+    public function __construct(BaseFacebook $facebook, $userManager, $validator, $extendedAccessToken, RequestStack $requestStack)
     {
         $this->facebook = $facebook;
         $this->userManager = $userManager;
         $this->validator = $validator;
         $this->extendedAccessToken = $extendedAccessToken;
+        $this->request = $requestStack->getCurrentRequest();
     }
 
     public function getFacebook() {
@@ -82,6 +85,8 @@ class FacebookProvider implements UserProviderInterface
                 $user->setExpirationExtendedAccessToken(new \DateTime('+2 month'));
                 $this->facebook->setAccessToken($user->getExtendedAccessToken());
             }
+
+            $user->setIp($this->request->getClientIp());
             $this->userManager->updateUser($user);
         }
 

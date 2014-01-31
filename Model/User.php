@@ -19,7 +19,6 @@ class User extends BaseUser
         parent::__construct();
         $this->count = 1;
         $this->validated = false;
-        $this->ip = isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : NULL;
     }
 
     /**
