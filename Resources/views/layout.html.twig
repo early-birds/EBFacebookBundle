@@ -5,7 +5,8 @@
         <meta charset="UTF-8"/>
         <title>{% block title %}{% endblock %}</title>
         {% block stylesheets %}
-            {% stylesheets 'bundles/ebfacebook/css/jquery.qtip.min.css'
+            {% stylesheets 'bundles/ebfacebook/css/facebook.css'
+                           'bundles/ebfacebook/css/jquery.qtip.min.css'
             filter='cssrewrite'
             %}
             <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
@@ -26,6 +27,7 @@
         <!-- Vars usable in JS -->
         <input type="hidden" id="pathRouteInSession" value="{{ path('route_in_session') }}" />
         <input type="hidden" id="pathSecurityLogin" value="{{ path('_security_check') }}" />
+        <input type="hidden" id="pathWidgetFbPhotos" value="{{ path('eb_facebook_photos') }}" />
         <input type="hidden" id="isConnected" value="{{ is_granted('IS_AUTHENTICATED_FULLY') ? 'yes' : 'no' }}" />
 
         {% block layout_msg %}
@@ -73,6 +75,63 @@
                 }
             }
         </script>
+
+        {% block fb_widget %}
+            {% block fb_photos_dialog %}
+                <div class="fb-widget">
+                    <div class="popin-fb popin-fb-photos dialog-fb-photos">
+                        <input type="hidden" id="facebook_photo_url" />
+                        <div class="popin-fb-wrap">
+                            <div class="popin-fb-n1">
+                                <div class="popin-fb-n2">
+                                    <h2 class="popin-fb-title">
+                                        <span>{{ 'photos.choose'|trans({}, "widgets") }}</span>
+                                    </h2>
+                                    <div class="popin-fb-n3">
+                                        <div class="popin-fb-n4">
+                                            <div class="pam uiBoxGray">
+                                                <div class="clearfix">
+                                                    <div class="lfloat">
+                                                        <span class="fsl fwb">{{ 'photos.recent'|trans({}, "widgets") }}</span>
+                                                    </div>
+                                                    <div class="rfloat">
+                                                        <a href="" rel="async">
+                                                            <a class="read-facebook-albums" href="{{ path('eb_facebook_albums') }}">
+                                                                <span class="fsl fwb">{{ 'photos.albums'|trans({}, "widgets") }}</span>
+                                                            </a>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="popin-fb-n5 uiScrollableArea native">
+                                                <div class="uiScrollableAreaWrap scrollable" tabindex="0" role="group" aria-label="Scrollable region">
+                                                    <div class="fb-dialog-loader"></div>
+                                                    <div class="uiScrollableAreaBody">
+                                                        <div class="uiScrollableAreaContent">
+                                                            <div class="fb-photos-wrap">
+                                                                <ul class="fb-photos"></ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="fb-popin-buttons clearfix">
+                                            <div class="rfloat mlm">
+                                                <label class="uiButton uiButtonLarge">
+                                                    <input type="button" name="cancel" value="Cancel" class="close-fb-popin">
+                                                </label>
+                                            </div>
+                                            <div class="fb-popin-buttons-msg"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endblock %}
+        {% endblock %}
 
         {% block more %}
         {% endblock more %}

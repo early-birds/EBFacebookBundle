@@ -26,4 +26,16 @@
         <requirement key="_method">POST</requirement>
     </route>
 
+    <route id="eb_facebook_photos" pattern="/facebook/photos">
+        <default key="_controller">EBFacebookBundle:Facebook:photo</default>
+    </route>
+
+    <route id="eb_facebook_albums" pattern="/facebook/albums">
+        <default key="_controller">EBFacebookBundle:Facebook:albums</default>
+    </route>
+
+    <route id="eb_facebook_album_photos" pattern="/facebook/albums/{albumId}">
+        <default key="_controller">EBFacebookBundle:Facebook:albumPhotos</default>
+    </route>
+
 </routes>

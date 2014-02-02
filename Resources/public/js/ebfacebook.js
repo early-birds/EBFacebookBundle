@@ -6,6 +6,7 @@ var EbFacebook = function () {
   this.permissions = '';
   this.pathRouteInSession = null;
   this.pathSecurityLogin = null;
+  this.pathWidgetFbPhotos = null;
   this.me = null;
 
   $(document).ready(function () {
@@ -33,6 +34,7 @@ EbFacebook.prototype.init = function () {
   /* Init vars with DOM */
   this.pathRouteInSession = $('#pathRouteInSession').val();
   this.pathSecurityLogin = $('#pathSecurityLogin').val();
+  this.pathWidgetFbPhotos = $('#pathWidgetFbPhotos').val();
   this.isConnected = $('#isConnected').val() === 'yes' ? true : false;
 
   this.initFb();
@@ -233,6 +235,8 @@ EbFacebook.prototype.initFb = function () {
       _this.login(targetData);
     }
   });
+
+  _this.initFbPhotoDialog();
 };
 
 EbFacebook.prototype.picture = function (facebookId, width, height) {
@@ -251,6 +255,91 @@ EbFacebook.prototype.picture = function (facebookId, width, height) {
 
 EbFacebook.prototype.myPicture = function (width, height) {
   return this.picture(this.me.facebookId, width, height);
+};
+
+EbFacebook.prototype.initFbPhotoDialog = function () {
+  var _this = this;
+
+  var templatePhoto = function (thumb, source) {
+    var templatePhoto = $('<li>').attr('class', '_51m- vTop pas');
+    var a = $('<a>').attr({
+      'class': 'uiMediaThumb uiMediaThumbLarge',
+      'href': source
+    }).click(function (e) {
+      e.preventDefault();
+      var href = $(this).attr('href');
+      $('#facebook_photo_url').val(href).trigger('change');
+      closePopin();
+    }).appendTo(templatePhoto);
+    $('<i>').attr({
+      'class': 'uiMediaThumbImg',
+      'style': 'background-image: url(' + thumb + ')'
+    }).appendTo(a);
+
+    return templatePhoto;
+  };
+
+  var templateAlbum = function (id, name, thumb, route) {
+    var templateAlbum = $('<li>').attr('class', '_51m- vTop pas');
+    var a = $('<a>').attr({
+      'class': 'uiMediaThumb uiMediaThumbLarge',
+      'href': route,
+      'title': name
+    }).data('id', id).click(function (e) {
+      e.preventDefault();
+      var href = $(this).attr('href');
+      $('.popin-fb-photos .fb-photos').html('');
+      $('.fb-dialog-loader').show();
+      $.getJSON(href, function (data) {
+        $.each(data, function (k, v) {
+          $('.popin-fb-photos .fb-photos').append(templatePhoto(v.thumb, v.source));
+        });
+        $('.fb-dialog-loader').hide();
+      });
+    }).appendTo(templateAlbum);
+    $('<i>').attr({
+      'class': 'uiMediaThumbImg',
+      'style': 'background-image: url(' + thumb + ')'
+    }).appendTo(a);
+
+    return templateAlbum;
+  };
+
+  var closePopin = function () {
+    $('.popin-fb-photos').hide();
+    $('.popin-fb-photos .fb-photos').html('');
+    $('.fb-dialog-loader').hide();
+  };
+
+  $('.close-fb-popin').click(function (e) {
+    e.preventDefault();
+    closePopin();
+  });
+
+  $('.open-fb-photos-dialog').click(function (e) {
+    e.preventDefault();
+    closePopin();
+    $('.popin-fb-photos, .fb-dialog-loader').show();
+    $.getJSON(_this.pathWidgetFbPhotos, function (data) {
+      $.each(data, function (k, v) {
+        $('.popin-fb-photos .fb-photos').append(templatePhoto(v.thumb, v.source));
+      });
+      $('.fb-dialog-loader').hide();
+    });
+  });
+
+  $('.read-facebook-albums').click(function (e) {
+    e.preventDefault();
+    var url = $(this).attr('href');
+    $('.popin-fb-photos .fb-photos').html('');
+    $('.fb-dialog-loader').show();
+    $.getJSON(url, function (data) {
+      $.each(data, function (k, v) {
+        $('.popin-fb-photos .fb-photos').append(templateAlbum(v.id, v.name, v.thumb, v.route));
+      });
+      $('.fb-dialog-loader').hide();
+    });
+  });
 };
 
 if (typeof jQuery !== 'undefined') {

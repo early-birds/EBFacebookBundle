@@ -113,7 +113,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   background-color: #EEEEEE;
   background-position: -352px -103px;
   background-repeat: no-repeat;
-  background-image: url('../images/facebook/Jsxaj6wDwuy.png?1390691755');
+  background-image: url('../images/facebook/Jsxaj6wDwuy.png?1390953844');
   background-size: auto auto;
   border-color: #999999 #999999 #888888;
   border-image: none;
@@ -241,22 +241,24 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   right: 0;
   bottom: 0;
   background-color: rgba(252, 252, 252, 0.9);
+  z-index: 5000;
 }
-.fb-widget .popin-fb .fb-dialog-loader {
+.fb-widget .popin-fb f
+.fb-dialog-loader {
   display: none;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: url('../images/facebook/ajax-loader-white.gif?1390463717') no-repeat center center white;
+  background: url('../images/ajax-loader-white.gif') no-repeat center center white;
   height: 100%;
   z-index: 500;
 }
 .fb-widget .popin-fb a.read-facebook-albums:hover {
   text-decoration: underline;
 }
-.fb-widget .popin-fb popin-fb-wrap {
+.fb-widget .popin-fb .popin-fb-wrap {
   width: 734px;
 }
 .fb-widget .popin-fb .popin-fb-n1 {
@@ -274,7 +276,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 }
 .fb-widget .popin-fb .popin-fb-n1 .popin-fb-n2 .popin-fb-title {
   background: none repeat scroll 0 0 #6D84B4;
-  border-color: #3B5998 #3B5998 -moz-use-text-color;
+  border-color: #3B5998;
   border-image: none;
   border-style: solid solid none;
   border-width: 1px 1px medium;

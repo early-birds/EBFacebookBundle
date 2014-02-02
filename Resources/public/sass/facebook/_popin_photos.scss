@@ -7,6 +7,7 @@
     right : 0;
     bottom: 0;
     background-color: rgba(252, 252, 252, 0.9);
+    z-index: 5000;
     
     .fb-dialog-loader{
         display: none;
@@ -15,7 +16,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: image-url('facebook/ajax-loader-white.gif') no-repeat center center white;
+        background: image-url('ajax-loader-white.gif') no-repeat center center white;
         height: 100%;
         z-index: 500;
     }
@@ -25,7 +26,7 @@
         }
     }
         
-    popin-fb-wrap {
+    .popin-fb-wrap {
         width: 734px;
     }
     
@@ -42,7 +43,7 @@
             outline: medium none;
             .popin-fb-title {
                 background: none repeat scroll 0 0 #6D84B4;
-                border-color: #3B5998 #3B5998 -moz-use-text-color;
+                border-color: #3B5998;
                 border-image: none;
                 border-style: solid solid none;
                 border-width: 1px 1px medium;

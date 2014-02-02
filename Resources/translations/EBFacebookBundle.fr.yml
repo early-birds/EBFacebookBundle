@@ -1,3 +1,9 @@
+widget:
+  photos:
+    choose: Choose From Your Photos
+    recent: Recent Uploads
+    albums: View Albums
+
 layout:
   invitation: Vous avez déjà invité tous les amis selectionnés
 
