@@ -26,7 +26,7 @@ class FacebookController extends Controller
         $photos = array();
         foreach($fbPhotos['data'] as $photo) {
             $photos[] = array(
-                'source'    => $photo['source'],
+                'source'    => preg_replace('#\?.+$#', '', $photo['source']),
                 'thumb'     => $this->getThumbnail($photo['images'])
             );
         }
