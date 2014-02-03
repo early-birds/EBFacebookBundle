@@ -113,7 +113,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   background-color: #EEEEEE;
   background-position: -352px -103px;
   background-repeat: no-repeat;
-  background-image: url('../images/facebook/Jsxaj6wDwuy.png?1390953844');
+  background-image: url('../images/facebook/Jsxaj6wDwuy.png?1390986212');
   background-size: auto auto;
   border-color: #999999 #999999 #888888;
   border-image: none;
@@ -208,6 +208,9 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 .fb-widget .pas {
   padding: 5px;
 }
+.fb-widget .fsm {
+  font-size: 11px;
+}
 .fb-widget td, .fb-widget td.label {
   text-align: left;
 }
@@ -233,6 +236,36 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   background-repeat: no-repeat;
   display: block;
 }
+.fb-widget .uiMediaThumbAlb {
+  margin-bottom: 5px;
+  margin-right: 5px;
+}
+.fb-widget .uiMediaThumbAlbLarge, .fb-widget .uiMediaThumbLarge .uiMediaThumbWrap i {
+  height: 111px;
+  width: 144px;
+}
+.fb-widget .uiMediaThumbWrap {
+  background: #fff;
+  border: 1px solid #ccc;
+  left: 4px;
+  padding: 4px;
+  position: absolute;
+  top: 4px;
+}
+.fb-widget .uiMediaThumbWrap:hover {
+  border-color: #3b5998;
+}
+.fb-widget .uiScaledImageContainer {
+  position: relative;
+  overflow: hidden;
+}
+.fb-widget .uiScaledImageContainer img {
+  height: 100%;
+  width: 100%;
+  min-height: 100%;
+  position: relative;
+  border: 0;
+}
 .fb-widget .popin-fb {
   display: none;
   position: fixed;
@@ -243,8 +276,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   background-color: rgba(252, 252, 252, 0.9);
   z-index: 5000;
 }
-.fb-widget .popin-fb f
-.fb-dialog-loader {
+.fb-widget .popin-fb .fb-dialog-loader {
   display: none;
   position: absolute;
   top: 0;

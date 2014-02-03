@@ -90,6 +90,8 @@ a { color: #3B5998; cursor: pointer; text-decoration: none; }
 ._51mx:first-child > ._51m- { padding-top: 0; }
 .uiGrid .vTop { vertical-align: top; }
 .pas { padding: 5px; }
+.fsm{ font-size: 11px; }
+
 td, td.label { text-align: left; }
 
 .uiMediaThumb {
@@ -104,6 +106,7 @@ td, td.label { text-align: left; }
         border-color: #3B5998    
     }
 }
+
 .uiMediaThumbLarge i {
     height: 116px;
     width: 149px;
@@ -113,4 +116,37 @@ td, td.label { text-align: left; }
     background-position: center 25%;
     background-repeat: no-repeat;
     display: block;
+}
+
+.uiMediaThumbAlb {
+  margin-bottom: 5px;
+  margin-right: 5px;
+}
+.uiMediaThumbAlbLarge, .uiMediaThumbLarge .uiMediaThumbWrap i {
+  height: 111px;
+  width: 144px;
+}
+
+.uiMediaThumbWrap {
+  background: #fff;
+  border: 1px solid #ccc;
+  left: 4px;
+  padding: 4px;
+  position: absolute;
+  top: 4px;
+  &:hover{
+    border-color: #3B5998
+  }
+}
+
+.uiScaledImageContainer {
+  position: relative;
+  overflow: hidden;
+  img{
+    height: 100%;
+    width: 100%;
+    min-height: 100%;
+    position: relative;
+    border: 0;
+  }
 }
