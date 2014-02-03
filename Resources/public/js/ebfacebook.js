@@ -280,19 +280,6 @@ EbFacebook.prototype.initFbPhotoDialog = function () {
   };
 
   var templateAlbum = function (id, name, thumb, route) {
-
-    /*
-
-     <a class="uiMediaThumb uiMediaThumbAlb uiMediaThumbAlbLarge" rel="async" href="#" role="button">
-      <span class="uiMediaThumbWrap">
-        <div class="uiScaledImageContainer uiMediaThumbImg" style="width:144px;height:111px;">
-          <img class="img" src="https://scontent-b-mad.xx.fbcdn.net/hphotos-frc3/t1/p118x118/301724_3684287258549_59825551_n.jpg" style="left:-1px;" alt="Donovan Harscoet's photo." width="148" height="111">
-        </div>
-      </span>
-     </a>
-
-     */
-
     var templateAlbum = $('<li>').attr('class', '_51m- vTop pas');
     var a = $('<a>').attr({
       'class': 'uiMediaThumb uiMediaThumbAlb uiMediaThumbAlbLarge',
