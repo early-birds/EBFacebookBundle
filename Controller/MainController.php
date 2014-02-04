@@ -66,7 +66,7 @@ class MainController extends Controller
                 $m->persist($user);
                 $m->flush();
                 
-                return $this->redirect($this->generateUrl('game'));
+                if ($registerCallback) return $this->redirect($this->generateUrl($registerCallback));
             }
         }
         
