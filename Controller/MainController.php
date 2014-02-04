@@ -5,6 +5,7 @@ namespace EB\FacebookBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use EB\FacebookBundle\Entity\Invitation;
+use Symfony\Component\HttpFoundation\Request;
 
 class MainController extends Controller
 {
@@ -39,19 +40,19 @@ class MainController extends Controller
         return $this->render($view, $data);
     }
     
-    public function homeAction()
+    public function homeAction(Request $request)
     {
-        if ($this->isDev()) $this->getRequest()->getSession()->set('liked', true);
+        if ($this->isDev()) $request->getSession()->set('liked', true);
         
         return $this->facebookReturn('home');
     }
     
-    public function registerAction()
+    public function registerAction(Request $request)
     {
         $user    = $this->getUser();
-        if (!$this->isDev() && $user->getValidated()) return $this->redirect($this->generateUrl('game'));
+        $registerCallback = $this->container->getParameter('eb_facebook.register_callback');
+        if ($registerCallback && $user->getValidated()) return $this->redirect($this->generateUrl($registerCallback));
         
-        $request      = $this->getRequest();
         $userType     = $this->getParam('form_class');
         $userClass    = $this->getParam('user_class');
         $translation  = $this->getParam('translation');
@@ -74,10 +75,9 @@ class MainController extends Controller
         ));
     }
 
-    public function countAction()
+    public function countAction(Request $request)
     {
         $m          = $this->getDoctrine()->getManager();
-        $request    = $this->getRequest();
         $user       = $this->getUser();
         $friends    = $request->request->get('to', false);
         $count      = $user->getCount();
@@ -120,9 +120,8 @@ class MainController extends Controller
         return $response;
     }
 
-    public function setRouteSessionAction()
+    public function setRouteSessionAction(Request $request)
     {
-        $request = $this->getRequest();
         $direct_url = $request->request->get('direct_url', false);
         $route = $request->request->get('route', false);
         $route_params = $request->request->get('route_params', false);
