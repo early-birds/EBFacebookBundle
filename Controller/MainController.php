@@ -50,8 +50,8 @@ class MainController extends Controller
     public function registerAction(Request $request)
     {
         $user    = $this->getUser();
-        $registerCallback = $this->container->getParameter('eb_facebook.register_callback');
-        if ($registerCallback && $user->getValidated()) return $this->redirect($this->generateUrl($registerCallback));
+        $registerParams = $this->container->getParameter('eb_facebook.register');
+        if ($registerParams['once'] && $user->getValidated() && $registerParams['callback']) return $this->redirect($this->generateUrl($registerParams['callback']));
         
         $userType     = $this->getParam('form_class');
         $userClass    = $this->getParam('user_class');
@@ -66,7 +66,7 @@ class MainController extends Controller
                 $m->persist($user);
                 $m->flush();
                 
-                if ($registerCallback) return $this->redirect($this->generateUrl($registerCallback));
+                if ($registerParams['callback']) return $this->redirect($this->generateUrl($registerParams['callback']));
             }
         }
         
