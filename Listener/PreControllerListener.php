@@ -8,18 +8,24 @@ use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use \BaseFacebook;
+use \EB\FacebookBundle\Provider\FacebookProvider;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class PreControllerListener
 {
     protected $router;
     protected $facebookApi;
+    protected $facebookProvider;
+    protected $securityContext;
     protected $config;
-   
-    public function __construct(RouterInterface $router, BaseFacebook $facebookApi, $config)
+
+    public function __construct(RouterInterface $router, BaseFacebook $facebookApi, FacebookProvider $facebookProvider, $securityContext, $config)
     {
         $this->router = $router;
         $this->facebookApi = $facebookApi;
-        $this->config = $config;    
+        $this->facebookProvider = $facebookProvider;
+        $this->securityContext = $securityContext;
+        $this->config = $config;
     }
  
     public function onKernelController(FilterControllerEvent $event)
@@ -36,7 +42,24 @@ class PreControllerListener
             if (in_array($route, $this->config['precontroller_exclude_route'])) return;
             if (preg_match('#'.implode('|', $this->config['precontroller_exclude_route_start']).'#', $route)) return;
             if (preg_match('#'.implode('|', $this->config['precontroller_exclude_pattern']).'#', $url)) return;
-            
+
+            $fbToken = $request->get('signed_request', false);
+            $signedRequest = $fbToken ? $this->facebookApi->getSignedRequest() : false;
+
+            /* Auto connect */
+            if ($signedRequest && !$this->securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
+                $uId = $this->facebookApi->getUser();
+                try {
+                    $user = $this->facebookProvider->loadUserByUsername($uId);
+                    if($user){
+                        $token = new UsernamePasswordToken($user, null, $this->config['firewall'], $user->getRoles());
+                        $this->securityContext->setToken($token);
+                    }
+                } catch (\Exception $e) {
+                    //Application not accepted
+                }
+            }
+
             foreach ($this->config['app_params'] as $p) {
                 if (!is_null($GET->get($p))) {
                     $appParam = true;
@@ -44,7 +67,6 @@ class PreControllerListener
                 }
             }
             
-            /* Facebook debug iframe */
             if (!is_null($GET->get('request_ids')) || !is_null($GET->get('fb_source')) || $appParam) {
                 if ($appParam) {
                     foreach ($this->config['app_params'] as $appParam) {
@@ -60,11 +82,9 @@ class PreControllerListener
 
             /* Like security */
             if ($this->config['tab_like'] && $this->config['tab_url']) {
-                $fbToken = $request->get('signed_request', false);
                 $liked   = $session->get('liked', false);
 
                 if($fbToken){
-                    $signedRequest = $this->facebookApi->getSignedRequest();
                     if(!is_null($signedRequest['page']['liked'])){
                         $liked = $signedRequest['page']['liked'];
                         $session->set('liked', $liked);

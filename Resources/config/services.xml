@@ -29,6 +29,8 @@
         <service id="eb_facebook.listener.precontroller" class="%eb_facebook.listener.precontroller.class%">
             <argument type="service" id="router" />
             <argument type="service" id="fos_facebook.api" />
+            <argument type="service" id="eb_facebook.provider" />
+            <argument type="service" id="security.context" />
             <argument>%eb_facebook.config%</argument>
             <tag name="kernel.event_listener" event="kernel.controller"  method="onKernelController" />
         </service>
