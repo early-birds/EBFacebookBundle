@@ -216,7 +216,14 @@ EbFacebook.prototype.initFb = function () {
     });
   });
 
-  $('.fbLogin').click(function (e) {
+  _this.loginBtn($('.fbLogin'));
+  _this.initFbPhotoDialog();
+};
+
+EbFacebook.prototype.loginBtn = function (btn) {
+  var _this = this;
+
+  btn.click(function (e) {
     if (!_this.isConnected || $(this).data('force')) {
       e.preventDefault();
       var targetData = false;
@@ -235,8 +242,6 @@ EbFacebook.prototype.initFb = function () {
       _this.login(targetData);
     }
   });
-
-  _this.initFbPhotoDialog();
 };
 
 EbFacebook.prototype.picture = function (facebookId, width, height) {
@@ -254,7 +259,8 @@ EbFacebook.prototype.picture = function (facebookId, width, height) {
 };
 
 EbFacebook.prototype.myPicture = function (width, height) {
-  return this.picture(this.me.facebookId, width, height);
+  var facebookId = this.me ? this.me.facebookId : null;
+  return this.picture(facebookId, width, height);
 };
 
 EbFacebook.prototype.initFbPhotoDialog = function () {
