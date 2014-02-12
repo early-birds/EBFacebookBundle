@@ -80,10 +80,10 @@ class FacebookProvider implements UserProviderInterface
             }
 
             if ($this->extendedAccessToken) {
-                $this->facebook->setExtendedAccessToken();
-                $user->setExtendedAccessToken($this->facebook->getAccessToken());
-                $user->setExpirationExtendedAccessToken(new \DateTime('+2 month'));
-                $this->facebook->setAccessToken($user->getExtendedAccessToken());
+                $extendedAccessToken = $this->getExtendedAccessToken();
+                $this->facebook->setAccessToken($extendedAccessToken['access_token']);
+                $user->setExtendedAccessToken($extendedAccessToken['access_token']);
+                $user->setExpirationExtendedAccessToken($extendedAccessToken['expires']);
             }
 
             $user->setIp($this->request->getClientIp());
@@ -95,6 +95,30 @@ class FacebookProvider implements UserProviderInterface
         }
 
         return $user;
+    }
+
+    public function getExtendedAccessToken () {
+        $params = array(
+            'client_id' => $this->facebook->getAppId(),
+            'client_secret' => $this->facebook->getAppSecret(),
+            'grant_type' => 'fb_exchange_token',
+            'fb_exchange_token' => $this->facebook->getAccessToken(),
+        );
+
+        $url = 'https://graph.facebook.com/oauth/access_token?';
+        foreach ($params as $key => $param) $url .= $key . '=' . $param. '&';
+        $access_token_response = file_get_contents($url);
+
+        $response_params = array();
+        parse_str($access_token_response, $response_params);
+
+        $expiresDate = new \DateTime();
+        $expiresDate->setTimestamp($response_params['expires'] + time());
+
+        return array(
+            'access_token' => $response_params['access_token'],
+            'expires' => $expiresDate,
+        );
     }
 
     public function refreshUser(UserInterface $user)
