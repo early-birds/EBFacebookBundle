@@ -2,7 +2,9 @@
 <!DOCTYPE html>
 <html>
     <head>
+        {% block meta %}
         <meta charset="UTF-8"/>
+        {% endblock %}
         <title>{% block title %}{% endblock %}</title>
         {% block stylesheets %}
             {% stylesheets 'bundles/ebfacebook/css/facebook.css'
