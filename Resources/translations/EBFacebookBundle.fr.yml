@@ -17,7 +17,7 @@ form:
       address: Adresse
       zipcode: Code postal
       phone: Téléphone
-      readConditions: J'ai lu et j'accepte le règlement du concours
+      rules: J'ai lu et j'accepte le règlement du concours
       offers:
         email: Par email.
         sms: Par SMS.

@@ -11,7 +11,7 @@ form:
       address: Address
       zipcode: Zipcode
       phone: Phone
-      readConditions: I have read and agree to the contest rules
+      rules: I have read and agree to the contest rules
       offers:
         email: By email.
         sms: By SMS.

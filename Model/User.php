@@ -19,6 +19,7 @@ class User extends BaseUser
         parent::__construct();
         $this->count = 1;
         $this->validated = false;
+        $this->rules = false;
     }
 
     /**
@@ -125,6 +126,13 @@ class User extends BaseUser
      * @ORM\Column(name="count", type="integer", options={"default" = 1})
      */
     protected $count;
+
+    /**
+     * @var rules
+     *
+     * @ORM\Column(name="rules", type="boolean", options={"default" = 0})
+     */
+    protected $rules;
 
     protected $invitation;
     protected $extendedAccessToken;
@@ -615,5 +623,28 @@ class User extends BaseUser
     public function getExpirationExtendedAccessToken()
     {
         return $this->expirationExtendedAccessToken;
+    }
+
+    /**
+     * Set rules
+     *
+     * @param boolean $rules
+     * @return User
+     */
+    public function setRules($rules)
+    {
+        $this->rules = $rules;
+
+        return $this;
+    }
+
+    /**
+     * Get rules
+     *
+     * @return boolean
+     */
+    public function getRules()
+    {
+        return $this->rules;
     }
 }

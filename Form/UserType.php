@@ -49,15 +49,7 @@ class UserType extends AbstractType
             ->add('zipcode_fr', null, array('required' => true, 'label' => 'form.label.zipcode', 'attr' => array('class' => 'required')))
             ->add('city', null, array('required' => true,'label' => 'form.label.city','attr' => array('class' => 'required')))
             ->add('phone', null, array('required' => false,'label' => 'form.label.phone'))
-            ->add('readConditions', 'checkbox', array(
-                'label' => 'form.label.readConditions',
-                'mapped' => false,
-                'required' => false,
-                'constraints' => array(
-                    new True(array('message' => 'form.error.readConditions'))
-                ),
-                'attr' => array('class' => 'required')
-            ))
+            ->add('rules', 'checkbox', array('label' => 'form.label.rules', 'required' => false, 'attr' => array('class' => 'required')))
             ->add('offersEmail', 'checkbox', array('label' => 'form.label.offers.email', 'required' => false))
             ->add('offersSms', 'checkbox', array('label' => 'form.label.offers.sms', 'required' => false))
         ;
