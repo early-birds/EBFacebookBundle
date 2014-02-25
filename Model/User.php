@@ -20,6 +20,7 @@ class User extends BaseUser
         $this->count = 1;
         $this->validated = false;
         $this->rules = false;
+        $this->setCreated(new \DateTime());
     }
 
     /**
@@ -134,6 +135,13 @@ class User extends BaseUser
      */
     protected $rules;
 
+    /**
+     * @var $created
+     *
+     * @ORM\Column(name="created", type="datetime", nullable=false)
+     */
+    protected $created;
+
     protected $invitation;
     protected $extendedAccessToken;
     protected $expirationExtendedAccessToken;
@@ -166,6 +174,29 @@ class User extends BaseUser
         if (isset($fbdata['email'])) {
             $this->setEmail($fbdata['email']);
         }
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     * @return User
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+
+        return $this;
     }
 
     /**
