@@ -283,7 +283,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   left: 0;
   right: 0;
   bottom: 0;
-  background: url('../images/ajax-loader-white.gif') no-repeat center center white;
+  background: url('../images/facebook/ajax-loader-white.gif') no-repeat center center white;
   height: 100%;
   z-index: 500;
 }
