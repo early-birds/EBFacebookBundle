@@ -183,11 +183,13 @@ EbFacebook.prototype.initFb = function () {
   $('.fbPostWall').click(function (e) {
     e.preventDefault();
     var obj = { method: 'feed' };
+    if ($(this).data('name')) obj.name = $(this).data('name');
     if ($(this).data('caption')) obj.caption = $(this).data('caption');
     if ($(this).data('description')) obj.description = $(this).data('description');
     if ($(this).data('link')) obj.link = $(this).data('link');
     if ($(this).data('picture')) obj.picture = $(this).data('picture');
-    FB.ui(obj, function () { });
+
+    FB.ui(obj, function () {});
   });
 
   $('.fbInvit').click(function (e) {
