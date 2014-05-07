@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints\True;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class UserType extends AbstractType
 {
@@ -16,25 +17,25 @@ class UserType extends AbstractType
     private $translator;
 
     /**
-    * @param string $class The User class name
-    */
+     * @param string $class The User class name
+     */
     public function __construct($class, $translation, $translator)
     {
         $this->class = $class;
         $this->translation = $translation;
         $this->translator = $translator;
     }
-    
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('firstname', null, array('required' => true, 'label' => 'form.label.firstname', 'attr' => array('class' => 'required')))
             ->add('lastname', null, array('required' => true, 'label' => 'form.label.lastname', 'attr' => array('class' => 'required')))
             ->add('birthday', 'birthday', array(
-                'required' => true,
-                'widget' => 'text',
-                'format' => $this->translator->trans('form.format.birthday', array(), $this->translation),
-                'label' => 'form.label.birthday')
+                    'required' => true,
+                    'widget' => 'text',
+                    'format' => $this->translator->trans('form.format.birthday', array(), $this->translation),
+                    'label' => 'form.label.birthday')
             )
             ->add('email', 'email', array(
                 'required' => true,
@@ -46,14 +47,24 @@ class UserType extends AbstractType
                 'attr' => array('class' => 'required')
             ))
             ->add('address', null, array('required' => true, 'label' => 'form.label.address', 'attr' => array('class' => 'required')))
-            ->add('zipcode_fr', null, array('required' => true, 'label' => 'form.label.zipcode', 'attr' => array('class' => 'required')))
+            ->add('zipcode_fr', 'text', array(
+                'required' => true,
+                'label' => 'form.label.zipcode',
+                'attr' => array(
+                    'class' => 'required',
+                    'pattern' => '^[0-9]{5}$'
+                ),
+                'constraints' => array(
+                    new Regex(array('pattern' => '/^[0-9]{5}$/'))
+                )
+            ))
             ->add('city', null, array('required' => true,'label' => 'form.label.city','attr' => array('class' => 'required')))
             ->add('phone', null, array('required' => false,'label' => 'form.label.phone'))
             ->add('rules', 'checkbox', array('label' => 'form.label.rules', 'required' => false, 'attr' => array('class' => 'required')))
             ->add('offersEmail', 'checkbox', array('label' => 'form.label.offers.email', 'required' => false))
             ->add('offersSms', 'checkbox', array('label' => 'form.label.offers.sms', 'required' => false))
         ;
-        
+
         $builder->setRequired(false);
     }
 
