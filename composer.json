@@ -17,26 +17,21 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "symfony/symfony": "~2.4",
-        "doctrine/orm": "~2.2,>=2.2.3",
-        "doctrine/doctrine-bundle": "~1.2",
-        "twig/extensions": "~1.0",
-        "symfony/assetic-bundle": "~2.3",
-        "symfony/swiftmailer-bundle": "~2.3",
-        "symfony/monolog-bundle": "~2.4",
-        "sensio/distribution-bundle": "~2.3",
-        "sensio/framework-extra-bundle": "~3.0",
-        "sensio/generator-bundle": "~2.3",
-        "friendsofsymfony/facebook-bundle": "dev-master",
-        "friendsofsymfony/user-bundle": "dev-master"
+        "symfony/symfony": "*",
+        "doctrine/orm": "*",
+        "doctrine/doctrine-bundle": "*",
+        "twig/extensions": "*",
+        "symfony/assetic-bundle": "*",
+        "symfony/swiftmailer-bundle": "*",
+        "symfony/monolog-bundle": "*",
+        "sensio/distribution-bundle": "*",
+        "sensio/framework-extra-bundle": "*",
+        "sensio/generator-bundle": "*",
+        "friendsofsymfony/facebook-bundle": "*",
+        "friendsofsymfony/user-bundle": "*"
     },
     "autoload": {
         "psr-0": { "EB\\FacebookBundle": "" }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0.x-dev"
-        }
     },
     "target-dir": "EB/FacebookBundle"
 }
